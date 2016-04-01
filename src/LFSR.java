@@ -24,9 +24,9 @@ public class LFSR {
 		this.mask_20 = 0x80000;
 		this.mask_21 = 0x100000;
 		this.mask_22 = 0x200000;
-		this.and_19 = 0xFFFFF;
-		this.and_22 = 0x7FFFFF;
-		this.and_23 = 0xFFFFFF;
+		this.and_18 = 0xFFFFF;
+		this.and_21 = 0x7FFFFF;
+		this.and_22 = 0xFFFFFF;
 	}
 
 	int VI = 54;
@@ -47,9 +47,9 @@ public class LFSR {
 	int mask_21 = 0x100000;
 	int mask_22 = 0x200000;
 	
-	int and_19 = 0xFFFFF;
-	int and_22 = 0x7FFFFF;
-	int and_23 = 0xFFFFFF;
+	int and_18 = 0xFFFFF;
+	int and_21 = 0x7FFFFF;
+	int and_22 = 0xFFFFFF;
 	
 
 	/**
@@ -94,5 +94,19 @@ public class LFSR {
 		LFSR = LFSR & and_mask;
 		
 		return LFSR;
+	}
+	
+	
+	public int CypherAFive (){
+		int bit18, bit21, bit22;
+		int result;
+		
+		bit18 = (LFSR1 & and_18)>>18;
+		bit21 = (LFSR2 & and_21)>>21;
+		bit22 = (LFSR3 & and_22)>>22;
+		
+		result = bit18 & bit21 & bit22;
+		
+		return result;
 	}
 }
