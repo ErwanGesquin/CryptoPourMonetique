@@ -103,12 +103,35 @@ public class LFSR {
 	 */
 	public int CypherAFive (){
 		int bit18, bit21, bit22;
+		int xor1, xor2, xor3;
 		int result;
 		
 		bit18 = (LFSR1 & and_18)>>18;
 		bit21 = (LFSR2 & and_21)>>21;
 		bit22 = (LFSR3 & and_22)>>22;
 		result = bit18 & bit21 & bit22;
+		
+		
+		xor1 = xor_LFSR1(LFSR1);
+		xor2 = xor_LFSR2(LFSR2);
+		xor3 = xor_LFSR3(LFSR3);
+		
+		/* Tous identiques*/
+		if ((xor1 == xor2) && (xor1 == xor3)){
+			shift_LFSR(LFSR1,xor1,and_18);
+			shift_LFSR(LFSR2,xor1,and_21);
+			shift_LFSR(LFSR3,xor1,and_22);
+		}else if ((xor1 == xor2) && (xor1 != xor3)){
+			shift_LFSR(LFSR1,xor1,and_18);
+			shift_LFSR(LFSR2,xor1,and_21);
+		}else if ((xor1 != xor2) && (xor1 == xor3)){
+			shift_LFSR(LFSR1,xor1,and_18);
+			shift_LFSR(LFSR3,xor1,and_22);
+		}else if ((xor2 == xor3) && (xor1 != xor3)){
+			shift_LFSR(LFSR2,xor2,and_21);
+			shift_LFSR(LFSR3,xor2,and_22);
+		}
+				
 		
 		return result;
 	}
