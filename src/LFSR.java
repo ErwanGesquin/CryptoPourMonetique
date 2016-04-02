@@ -48,7 +48,7 @@ public class LFSR {
 		this.mask_20 = 0x80000L;
 		this.mask_21 = 0x100000L;
 		this.mask_22 = 0x200000L;
-		this.mask_64 = 0x8000000000000000L;
+		this.mask_64 = 0x8000000000000000L; /* 64eme bit a 1 */
 
 		this.and_18 = 0xFFFFFL;
 		this.and_21 = 0x7FFFFFL;
@@ -98,7 +98,7 @@ public class LFSR {
 	public long shift_LFSR(long LFSR, long bit, long and_mask) {
 		LFSR = LFSR << 1;
 		LFSR = bit;
-		LFSR = LFSR & and_mask;
+		LFSR = LFSR & and_mask; /* Garde les n derniers bits de droite */
 
 		return LFSR;
 	}
@@ -112,28 +112,38 @@ public class LFSR {
 		long bit18, bit21, bit22;
 		long xor1, xor2, xor3;
 		long result;
-
+		
+		/* Stockage du bit le plus à droite */
 		bit18 = (LFSR1 & and_18) >> 18;
 		bit21 = (LFSR2 & and_21) >> 21;
 		bit22 = (LFSR3 & and_22) >> 22;
+		
 		result = bit18 & bit21 & bit22;
 
+		/* XOR sur les 3 LFSR selon les cases désignés*/
 		xor1 = xor_LFSR1(LFSR1);
 		xor2 = xor_LFSR2(LFSR2);
 		xor3 = xor_LFSR3(LFSR3);
 
+		/* Gestion des 4 cas cherchant la mojorité des bits */
 		/* Tous identiques */
 		if ((xor1 == xor2) && (xor1 == xor3)) {
 			shift_LFSR(LFSR1, xor1, and_18);
 			shift_LFSR(LFSR2, xor1, and_21);
 			shift_LFSR(LFSR3, xor1, and_22);
-		} else if ((xor1 == xor2) && (xor1 != xor3)) {
+		}
+		/* LFSR 1 et 2 */
+		else if ((xor1 == xor2) && (xor1 != xor3)) {
 			shift_LFSR(LFSR1, xor1, and_18);
 			shift_LFSR(LFSR2, xor1, and_21);
-		} else if ((xor1 != xor2) && (xor1 == xor3)) {
+		}
+		/* LFSR 1 et 3 */
+		else if ((xor1 != xor2) && (xor1 == xor3)) {
 			shift_LFSR(LFSR1, xor1, and_18);
 			shift_LFSR(LFSR3, xor1, and_22);
-		} else if ((xor2 == xor3) && (xor1 != xor3)) {
+		}
+		/* LFSR 2 et 3 */
+		else if ((xor2 == xor3) && (xor1 != xor3)) {
 			shift_LFSR(LFSR2, xor2, and_21);
 			shift_LFSR(LFSR3, xor2, and_22);
 		}
@@ -141,21 +151,31 @@ public class LFSR {
 		return result;
 	}
 
+	/**
+	 * Initialisation des trois LFSR (64 cycle)
+	 * 
+	 * @param lfsr
+	 * @return
+	 */
 	public LFSR cycle_64(LFSR lfsr) {
 		int i;
 		long xor1, xor2, xor3;
 		long init_mask = mask_64;
 
 		for (i = 64; i > 0; i--) {
+			/* Traitement XOR LFSR1 */
 			xor1 = xor_LFSR1(lfsr.LFSR1) ^ (init_mask & VI) >> i;
 			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
 
+			/* Traitement XOR LFSR2 */
 			xor2 = xor_LFSR2(lfsr.LFSR2) ^ (init_mask & VI) >> i;
 			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
 
+			/* Traitement XOR LFSR3 */
 			xor3 = xor_LFSR3(lfsr.LFSR3) ^ (init_mask & VI) >> i;
 			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor3, and_22);
 
+			/* Décallage du masque vers la droite */
 			init_mask /= 2;
 		}
 		return lfsr;
