@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.Random;
 
 public class DiffieHelmann {
@@ -21,12 +22,12 @@ public class DiffieHelmann {
 	//Constructors
 	public DiffieHelmann(long g, long a, long b) {
 		Random rnd = new Random();
-		//long x = 0;
-		//do{
-			//x = rnd.nextLong();
-		//}while(! is_prime(x));
+		long x = 0;
+		do{
+			x = rnd.nextLong();
+		}while(! is_prime(x) && x <= 0);
 		
-		this.p = rnd.nextLong();
+		this.p = x;
 		this.g = g;
 		this.a = a;
 		this.b = b;
@@ -98,22 +99,16 @@ public class DiffieHelmann {
 		this.key = key;
 	}
 	
-	/**private boolean is_prime(long a){
-		boolean premier = true;
-		
-		if(a < 0){
-			premier = false;
-		}else if(a != 0 && a != 1){
-			for(int i = 2; i <= a/2; i++){
-				if(a != i && a % i ==0){
-					premier = false;
-					break;
-				}
-			}
-		}
-		
-		return premier;
-	}*/
+	/**
+	 * Test la primalité de p.
+	 * @param a
+	 * @return true si p est premier
+	 */
+	private boolean is_prime(long a){
+		BigInteger b;
+		b = BigInteger.valueOf(a);
+		return b.isProbablePrime(100);
+	}
 
 	/**
 	 * Génère l'élément Ka ou Kb à envoyer à l'interlocuteur.
@@ -147,7 +142,10 @@ public class DiffieHelmann {
 	 */
 	public long generate_secret_element(long a, long p){
 		Random rnd = new Random();
-		a = rnd.nextLong();
+		do{
+			a = rnd.nextLong();
+		}while(a <= 0);
+		
 		return a % (p - 2);
 	}
 	
