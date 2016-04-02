@@ -1,19 +1,24 @@
 /**
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
+
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Formatter;
+
 public class LFSR {
 	public LFSR(int iv) {
 		
 		/*TODO:
 			Chiffrer un string puis un fichier
-			
 		*/
 		super();
 		
 		this.VI = iv;
-		this.LFSR1 = 0x3FFFFF;
-		this.LFSR2 = 0x3FFFFF;
-		this.LFSR3 = 0x3FFFFF;
+		this.LFSR1 = 0;
+		this.LFSR2 = 0;
+		this.LFSR3 = 0;
 		this.mask_7 = 0x40;
 		this.mask_8 = 0x80;
 		this.mask_10 = 0xA0;
@@ -95,8 +100,11 @@ public class LFSR {
 		
 		return LFSR;
 	}
-	
-	
+
+	/**
+	 * 
+	 * @return
+	 */
 	public int CypherAFive (){
 		int bit18, bit21, bit22;
 		int result;
@@ -104,7 +112,6 @@ public class LFSR {
 		bit18 = (LFSR1 & and_18)>>18;
 		bit21 = (LFSR2 & and_21)>>21;
 		bit22 = (LFSR3 & and_22)>>22;
-		
 		result = bit18 & bit21 & bit22;
 		
 		return result;
