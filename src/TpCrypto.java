@@ -24,7 +24,7 @@ public class TpCrypto {
 		// Alice : 
 		d.setCommonKey(d.generate_common_key(d.getKeyB(), d.getA(), d.getP()));
 		System.out.println("Alice: Common key= "+d.getCommonKey());
-		d.setCommonKey(0);
+		//d.setCommonKey(0);
 		// Bob : 
 		d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(), d.getP()));
 		System.out.println("Bob: Common key= "+d.getCommonKey());
