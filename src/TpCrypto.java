@@ -11,14 +11,16 @@ public class TpCrypto {
 		d.setA(d.generate_secret_element(5, d.getP()));
 		System.out.println(d.getA());
 		//Bob :
-		d.setB(d.generate_secret_element(5, d.getP()));
+		d.setB(d.generate_secret_element(6, d.getP()));
 		System.out.println(d.getB());
 		
 		// On créé ensuite les clés a transmettre de Alice a Bob et inversement.
 		// Alice : 
 		d.setKeyA(d.generate_private_key(d.getA(), d.getG(), d.getP()));
+		System.out.println("Alice: key= "+d.getKeyA());
 		// Bob : 
 		d.setKeyB(d.generate_private_key(d.getB(), d.getG(), d.getP()));
+		System.out.println("Bob: key= "+d.getKeyB());
 		
 		// On calcule ensuite la clé secrète de chaque coté
 		// Alice : 
@@ -28,7 +30,7 @@ public class TpCrypto {
 		// Bob : 
 		d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(), d.getP()));
 		System.out.println("Bob: Common key= "+d.getCommonKey());
-		
+		System.out.println("p= "+d.getP());
 		
 		/*=================================================*/
 		long iv;
