@@ -1,5 +1,3 @@
-import java.math.BigInteger;
-
 public class TpCrypto {
 
 	public static void main(String[] args) {
@@ -10,10 +8,10 @@ public class TpCrypto {
 		
 		// On génère les éléments sevrets pour Alice et Bob.
 		//Alice :
-		d.setA(d.generate_secret_element(new BigInteger(Integer.toString(5)), d.getP()));
+		d.setA(d.generate_secret_element(5, d.getP()));
 		System.out.println(d.getA());
 		//Bob :
-		d.setB(d.generate_secret_element(new BigInteger(Integer.toString(5)), d.getP()));
+		d.setB(d.generate_secret_element(5, d.getP()));
 		System.out.println(d.getB());
 		
 		// On créé ensuite les clés a transmettre de Alice a Bob et inversement.
@@ -26,7 +24,7 @@ public class TpCrypto {
 		// Alice : 
 		d.setCommonKey(d.generate_common_key(d.getKeyB(), d.getA(), d.getP()));
 		System.out.println(d.getCommonKey());
-		d.setCommonKey(new BigInteger(Integer.toString(0)));
+		d.setCommonKey(0);
 		// Bob : 
 		d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(), d.getP()));
 		System.out.println(d.getCommonKey());

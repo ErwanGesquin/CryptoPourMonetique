@@ -1,96 +1,95 @@
-import java.math.BigInteger;
 import java.util.Random;
 
 public class DiffieHelmann {
 	
 	//donnees publiques
-	private BigInteger p; //nbr premier
-	private BigInteger g; //generateur de(Z/pZ)*
+	private long p; //nbr premier
+	private long g; //generateur de(Z/pZ)*
 	
 	//donnees relatives a Alice
-	private BigInteger a; //entier a vérifiant 1 <= a <= p-2
-	private BigInteger keyA;
+	private long a; //entier a vérifiant 1 <= a <= p-2
+	private long keyA;
 	
 	//donnees relatives a Bob
-	private BigInteger b; 
-	private BigInteger keyB;
+	private long b; 
+	private long keyB;
 	
 	//cle commune
-	private BigInteger commonKey;
-	private BigInteger key;
+	private long commonKey;
+	private long key;
 	
 	//Constructors
-	public DiffieHelmann(int g, int a, int b) {
+	public DiffieHelmann(long g, long a, long b) {
 		Random rnd = new Random();
-		this.p = new BigInteger(64, 100, rnd);
-		this.g = new BigInteger(Integer.toString(g));
-		this.a = new BigInteger(Integer.toString(a));
-		this.b = new BigInteger(Integer.toString(b));
+		this.p = rnd.nextLong();
+		this.g = g;
+		this.a = a;
+		this.b = b;
 	}
 		
 
 	//getters/setters
-	public BigInteger getP() {
+	public long getP() {
 		return p;
 	}
 
-	public void setP(BigInteger p) {
+	public void setP(long p) {
 		this.p = p;
 	}
 
-	public BigInteger getG() {
+	public long getG() {
 		return g;
 	}
 
-	public void setG(BigInteger g) {
+	public void setG(long g) {
 		this.g = g;
 	}
 
-	public BigInteger getA() {
+	public long getA() {
 		return a;
 	}
 
-	public void setA(BigInteger a) {
+	public void setA(long a) {
 		this.a = a;
 	}
 
-	public BigInteger getKeyA() {
+	public long getKeyA() {
 		return keyA;
 	}
 
-	public void setKeyA(BigInteger keyA) {
+	public void setKeyA(long keyA) {
 		this.keyA = keyA;
 	}
 
-	public BigInteger getB() {
+	public long getB() {
 		return b;
 	}
 
-	public void setB(BigInteger b) {
+	public void setB(long b) {
 		this.b = b;
 	}
 
-	public BigInteger getKeyB() {
+	public long getKeyB() {
 		return keyB;
 	}
 
-	public void setKeyB(BigInteger keyB) {
+	public void setKeyB(long keyB) {
 		this.keyB = keyB;
 	}
 
-	public BigInteger getCommonKey() {
+	public long getCommonKey() {
 		return commonKey;
 	}
 
-	public void setCommonKey(BigInteger commonKey) {
+	public void setCommonKey(long commonKey) {
 		this.commonKey = commonKey;
 	}
 
-	public BigInteger getKey() {
+	public long getKey() {
 		return key;
 	}
 
-	public void setKey(BigInteger key) {
+	public void setKey(long key) {
 		this.key = key;
 	}
 	
@@ -103,8 +102,8 @@ public class DiffieHelmann {
 	 * @param p
 	 * @return Ka ou Kb
 	 */
-	public BigInteger generate_private_key(BigInteger a, BigInteger g, BigInteger p){
-		return g.modPow(a, p);
+	public long generate_private_key(long a, long g, long p){
+		return (long) Math.pow(a, g) % p;
 	}
 	
 
@@ -116,8 +115,8 @@ public class DiffieHelmann {
 	 * @param p
 	 * @return La clé partagée par le deux interlocuteurs
 	 */
-	public BigInteger generate_common_key(BigInteger key, BigInteger pow, BigInteger p){
-		return key.modPow(pow, p);
+	public long generate_common_key(long key, long pow, long p){
+		return (long) Math.pow(key, pow) % p;
 	}
 	
 	/**
@@ -126,10 +125,10 @@ public class DiffieHelmann {
 	 * @param p
 	 * @return L'élément secret
 	 */
-	public BigInteger generate_secret_element(BigInteger a, BigInteger p){
+	public long generate_secret_element(long a, long p){
 		Random rnd = new Random();
-		a = new BigInteger(64, rnd);
-		return a.mod(p);
+		a = rnd.nextLong();
+		return a % (p - 2);
 	}
 	
 	
