@@ -2,10 +2,6 @@
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
 
-import java.util.*;
-import java.io.*;
-import java.lang.*;
-import java.util.Formatter;
 
 public class LFSR {
 	public LFSR(int iv) {
