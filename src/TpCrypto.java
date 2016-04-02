@@ -23,22 +23,22 @@ public class TpCrypto {
 		// On calcule ensuite la clé secrète de chaque coté
 		// Alice : 
 		d.setCommonKey(d.generate_common_key(d.getKeyB(), d.getA(), d.getP()));
-		System.out.println(d.getCommonKey());
+		System.out.println("Alice: Common key= "+d.getCommonKey());
 		d.setCommonKey(0);
 		// Bob : 
 		d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(), d.getP()));
-		System.out.println(d.getCommonKey());
+		System.out.println("Bob: Common key= "+d.getCommonKey());
 		
 		
 		/*=================================================*/
 		long iv;
 		LFSR lfsr;
 				
-		iv = d.getCommonKey().intValue();
+		iv = d.getCommonKey();
 		lfsr = new LFSR(iv);
 		long result = lfsr.cypher_afive();
 		
-		System.out.println(lfsr.VI);
+		System.out.println("VI = "+lfsr.VI);
 		System.out.println("LFSR 1 = "+Long.toBinaryString(lfsr.LFSR1));
 		System.out.println("LFSR 2 = "+Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = "+Long.toBinaryString(lfsr.LFSR3));
