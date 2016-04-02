@@ -46,6 +46,14 @@ public class TpCrypto {
 		System.out.println("LFSR 3 = "+Long.toBinaryString(lfsr.LFSR3));
 		System.out.println("Chiffré = "+result);
 
+		lfsr = lfsr.cycle_64(lfsr);
+		
+		System.out.println("VI = "+Long.toBinaryString(lfsr.VI));
+		System.out.println("LFSR 1 = "+Long.toBinaryString(lfsr.LFSR1));
+		System.out.println("LFSR 2 = "+Long.toBinaryString(lfsr.LFSR2));
+		System.out.println("LFSR 3 = "+Long.toBinaryString(lfsr.LFSR3));
+		System.out.println("Chiffré = "+result);
+		
 		// Impossible d'imprimer le binaire formaté
 		//strLFSR1 = String.format("%5s", Integer.toBinaryString(LFSR1)).replace(' ', '0');
 	    //System.out.println("%2d", Integer.toBinaryString(1));

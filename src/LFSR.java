@@ -141,13 +141,23 @@ public class LFSR {
 		return result;
 	}
 	
-	public long cycle_64(long init_mask){
+	public LFSR cycle_64(LFSR lfsr){
 		int i;
+		long xor1, xor2, xor3;
+		long init_mask =  mask_64;
 		
-		for (i=0;i < 64; i++){
+		for (i=64;i >= 0; i--){
+			xor1 =  xor_LFSR1(lfsr.LFSR1) ^ (init_mask & VI)>>i;
+			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+			
+			xor2 =  xor_LFSR2(lfsr.LFSR2) ^ (init_mask & VI)>>i;
+			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
+			
+			xor3 =  xor_LFSR1(lfsr.LFSR3) ^ (init_mask & VI)>>i;
+			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor3, and_22);
+						
 			init_mask /= 2;
 		}
-		
-		return 0;
+		return lfsr;
 	}
 }
