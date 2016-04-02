@@ -38,7 +38,7 @@ public class TpCrypto {
 		lfsr = new LFSR(iv);
 		long result = lfsr.cypher_afive();
 		
-		System.out.println("VI = "+lfsr.VI);
+		System.out.println("VI = "+Long.toBinaryString(lfsr.VI));
 		System.out.println("LFSR 1 = "+Long.toBinaryString(lfsr.LFSR1));
 		System.out.println("LFSR 2 = "+Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = "+Long.toBinaryString(lfsr.LFSR3));
