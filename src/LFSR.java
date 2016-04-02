@@ -2,15 +2,14 @@
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
 
-
 public class LFSR {
 	public LFSR(int iv) {
-		
-		/*TODO:
-			Chiffrer un string puis un fichier
-		*/
+
+		/*
+		 * TODO: Chiffrer un string puis un fichier
+		 */
 		super();
-		
+
 		this.VI = iv;
 		this.LFSR1 = 0;
 		this.LFSR2 = 0;
@@ -32,7 +31,7 @@ public class LFSR {
 
 	int VI = 54;
 
-	/* Initialisation à 1*/
+	/* Initialisation à 1 */
 	int LFSR1 = 0x3FFFFF;
 	int LFSR2 = 0x3FFFFF;
 	int LFSR3 = 0x3FFFFF;
@@ -47,92 +46,98 @@ public class LFSR {
 	int mask_20 = 0x80000;
 	int mask_21 = 0x100000;
 	int mask_22 = 0x200000;
-	
+
 	int and_18 = 0xFFFFF;
 	int and_21 = 0x7FFFFF;
 	int and_22 = 0xFFFFFF;
-	
 
 	/**
 	 * XOR pour la premiere LFSR
+	 * 
 	 * @param LFSR1
 	 * @return Dernier bit de l'opération
 	 */
 	public int xor_LFSR1(int LFSR1) {
-		return ((LFSR1 & mask_18)>>18) ^ ((LFSR1 & mask_17)>>17) ^ ((LFSR1 & mask_16)>>16)
-				^ ((LFSR1 & mask_13)>>13);
+		return ((LFSR1 & mask_18) >> 18) ^ ((LFSR1 & mask_17) >> 17)
+				^ ((LFSR1 & mask_16) >> 16) ^ ((LFSR1 & mask_13) >> 13);
 	}
-	
+
 	/**
 	 * XOR pour la seconde LFSR
+	 * 
 	 * @param LFSR2
 	 * @return Dernier bit de l'opération
 	 */
 	public int xor_LFSR2(int LFSR2) {
-		return ((LFSR2 & mask_21)>>21) ^ ((LFSR2 & mask_20)>>20);
+		return ((LFSR2 & mask_21) >> 21) ^ ((LFSR2 & mask_20) >> 20);
 	}
-	
+
 	/**
 	 * XOR pour la troisieme LFSR
+	 * 
 	 * @param LFSR3
 	 * @return Dernier bit de l'opération
 	 */
 	public int xor_LFSR3(int LFSR3) {
-		return ((LFSR3 & mask_22)>>22) ^ ((LFSR3 & mask_21)>>21) ^ ((LFSR3 & mask_20)>>20)
-				^ ((LFSR3 & mask_17)>>17);
+		return ((LFSR3 & mask_22) >> 22) ^ ((LFSR3 & mask_21) >> 21)
+				^ ((LFSR3 & mask_20) >> 20) ^ ((LFSR3 & mask_17) >> 17);
 	}
-	
+
 	/**
 	 * Décalage à gauche et ajout du dernier bit
+	 * 
 	 * @param LFSR
 	 * @param bit
 	 * @param and_mask
 	 * @return
 	 */
-	public int shift_LFSR(int LFSR, int bit, int and_mask){
+	public int shift_LFSR(int LFSR, int bit, int and_mask) {
 		LFSR = LFSR << 1;
-		LFSR = bit;		
+		LFSR = bit;
 		LFSR = LFSR & and_mask;
-		
+
 		return LFSR;
 	}
 
 	/**
-	 * 
+	 * Implémente le schéma du TP
 	 * @return
 	 */
-	public int CypherAFive (){
+	public int cypher_afive() {
 		int bit18, bit21, bit22;
 		int xor1, xor2, xor3;
 		int result;
-		
-		bit18 = (LFSR1 & and_18)>>18;
-		bit21 = (LFSR2 & and_21)>>21;
-		bit22 = (LFSR3 & and_22)>>22;
+
+		bit18 = (LFSR1 & and_18) >> 18;
+		bit21 = (LFSR2 & and_21) >> 21;
+		bit22 = (LFSR3 & and_22) >> 22;
 		result = bit18 & bit21 & bit22;
-		
-		
+
 		xor1 = xor_LFSR1(LFSR1);
 		xor2 = xor_LFSR2(LFSR2);
 		xor3 = xor_LFSR3(LFSR3);
-		
-		/* Tous identiques*/
-		if ((xor1 == xor2) && (xor1 == xor3)){
-			shift_LFSR(LFSR1,xor1,and_18);
-			shift_LFSR(LFSR2,xor1,and_21);
-			shift_LFSR(LFSR3,xor1,and_22);
-		}else if ((xor1 == xor2) && (xor1 != xor3)){
-			shift_LFSR(LFSR1,xor1,and_18);
-			shift_LFSR(LFSR2,xor1,and_21);
-		}else if ((xor1 != xor2) && (xor1 == xor3)){
-			shift_LFSR(LFSR1,xor1,and_18);
-			shift_LFSR(LFSR3,xor1,and_22);
-		}else if ((xor2 == xor3) && (xor1 != xor3)){
-			shift_LFSR(LFSR2,xor2,and_21);
-			shift_LFSR(LFSR3,xor2,and_22);
+
+		/* Tous identiques */
+		if ((xor1 == xor2) && (xor1 == xor3)) {
+			shift_LFSR(LFSR1, xor1, and_18);
+			shift_LFSR(LFSR2, xor1, and_21);
+			shift_LFSR(LFSR3, xor1, and_22);
+		} else if ((xor1 == xor2) && (xor1 != xor3)) {
+			shift_LFSR(LFSR1, xor1, and_18);
+			shift_LFSR(LFSR2, xor1, and_21);
+		} else if ((xor1 != xor2) && (xor1 == xor3)) {
+			shift_LFSR(LFSR1, xor1, and_18);
+			shift_LFSR(LFSR3, xor1, and_22);
+		} else if ((xor2 == xor3) && (xor1 != xor3)) {
+			shift_LFSR(LFSR2, xor2, and_21);
+			shift_LFSR(LFSR3, xor2, and_22);
 		}
-				
-		
+
 		return result;
+	}
+	
+	public int cypher_acive_cycle(){
+		return 0;
+		
 	}
 }
