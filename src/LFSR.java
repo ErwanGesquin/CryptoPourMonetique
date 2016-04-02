@@ -97,58 +97,60 @@ public class LFSR {
 	 */
 	public long shift_LFSR(long LFSR, long bit, long and_mask) {
 		LFSR = LFSR << 1;
-		LFSR = bit;
+		LFSR += bit;
 		LFSR = LFSR & and_mask; /* Garde les n derniers bits de droite */
 
 		return LFSR;
 	}
 
-	/**
-	 * Implémente le schéma du TP
-	 * 
-	 * @return
-	 */
-	public long cypher_afive() {
+	public long get_first_and(LFSR lfsr){
 		long bit18, bit21, bit22;
-		long xor1, xor2, xor3;
-		long result;
-		
+
 		/* Stockage du bit le plus à droite */
 		bit18 = (LFSR1 & and_18) >> 18;
 		bit21 = (LFSR2 & and_21) >> 21;
 		bit22 = (LFSR3 & and_22) >> 22;
 		
-		result = bit18 & bit21 & bit22;
-
-		/* XOR sur les 3 LFSR selon les cases désignés*/
-		xor1 = xor_LFSR1(LFSR1);
-		xor2 = xor_LFSR2(LFSR2);
-		xor3 = xor_LFSR3(LFSR3);
+		return bit18 & bit21 & bit22;
+	}
+	
+	/**
+	 * Implémente le schéma du TP
+	 * 
+	 * @return
+	 */
+	public LFSR cypher_afive(LFSR lfsr) {
+		long bit18, bit21, bit22;
+		long xor1, xor2, xor3;
+		/* XOR sur les 3 LFSR selon les cases désignés */
+		xor1 = xor_LFSR1(lfsr.LFSR1);
+		xor2 = xor_LFSR2(lfsr.LFSR2);
+		xor3 = xor_LFSR3(lfsr.LFSR3);
 
 		/* Gestion des 4 cas cherchant la mojorité des bits */
 		/* Tous identiques */
 		if ((xor1 == xor2) && (xor1 == xor3)) {
-			shift_LFSR(LFSR1, xor1, and_18);
-			shift_LFSR(LFSR2, xor1, and_21);
-			shift_LFSR(LFSR3, xor1, and_22);
+			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor1, and_21);
+			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor1, and_22);
 		}
 		/* LFSR 1 et 2 */
 		else if ((xor1 == xor2) && (xor1 != xor3)) {
-			shift_LFSR(LFSR1, xor1, and_18);
-			shift_LFSR(LFSR2, xor1, and_21);
+			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor1, and_21);
 		}
 		/* LFSR 1 et 3 */
 		else if ((xor1 != xor2) && (xor1 == xor3)) {
-			shift_LFSR(LFSR1, xor1, and_18);
-			shift_LFSR(LFSR3, xor1, and_22);
+			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor1, and_22);
 		}
 		/* LFSR 2 et 3 */
 		else if ((xor2 == xor3) && (xor1 != xor3)) {
-			shift_LFSR(LFSR2, xor2, and_21);
-			shift_LFSR(LFSR3, xor2, and_22);
+			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
+			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor2, and_22);
 		}
-
-		return result;
+		
+		return lfsr;
 	}
 
 	/**
@@ -164,19 +166,86 @@ public class LFSR {
 
 		for (i = 64; i > 0; i--) {
 			/* Traitement XOR LFSR1 */
-			xor1 = xor_LFSR1(lfsr.LFSR1) ^ (init_mask & VI) >> i;
+			xor1 = xor_LFSR1(lfsr.LFSR1) ^ (init_mask & lfsr.VI) >> i;
 			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
 
 			/* Traitement XOR LFSR2 */
-			xor2 = xor_LFSR2(lfsr.LFSR2) ^ (init_mask & VI) >> i;
+			xor2 = xor_LFSR2(lfsr.LFSR2) ^ (init_mask & lfsr.VI) >> i;
 			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
 
 			/* Traitement XOR LFSR3 */
-			xor3 = xor_LFSR3(lfsr.LFSR3) ^ (init_mask & VI) >> i;
+			xor3 = xor_LFSR3(lfsr.LFSR3) ^ (init_mask & lfsr.VI) >> i;
 			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor3, and_22);
 
 			/* Décallage du masque vers la droite */
 			init_mask /= 2;
+		}
+		return lfsr;
+	}
+
+	/**
+	 * 
+	 * @param lfsr
+	 * @param frame_nb
+	 *            (1 frame = 228 bits), frame_nb sur 22 bits
+	 * @return
+	 */
+	public LFSR cycle_22(LFSR lfsr, int frame_nb) {
+		int i;
+		long xor1, xor2, xor3;
+		long init_mask = mask_64;
+
+		for (i = 22; i > 0; i--) {
+			/* Traitement XOR LFSR1 */
+			xor1 = xor_LFSR1(lfsr.LFSR1) ^ (init_mask & frame_nb) >> i;
+			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+
+			/* Traitement XOR LFSR2 */
+			xor2 = xor_LFSR2(lfsr.LFSR2) ^ (init_mask & frame_nb) >> i;
+			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
+
+			/* Traitement XOR LFSR3 */
+			xor3 = xor_LFSR3(lfsr.LFSR3) ^ (init_mask & frame_nb) >> i;
+			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor3, and_22);
+
+			/* Décallage du masque vers la droite */
+			init_mask /= 2;
+		}
+		return lfsr;
+	}
+
+	public LFSR cycle_100(LFSR lfsr) {
+		long xor1, xor2, xor3;
+		int i;
+
+		for (i = 0; i < 100; i++) {
+			/* XOR sur les 3 LFSR selon les cases désignés */
+			xor1 = xor_LFSR1(lfsr.LFSR1);
+			xor2 = xor_LFSR2(lfsr.LFSR2);
+			xor3 = xor_LFSR3(lfsr.LFSR3);
+
+			/* Gestion des 4 cas cherchant la mojorité des bits */
+			/* Tous identiques */
+			if ((xor1 == xor2) && (xor1 == xor3)) {
+				lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor1, and_21);
+				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor1, and_22);
+			}
+			/* LFSR 1 et 2 */
+			else if ((xor1 == xor2) && (xor1 != xor3)) {
+				lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor1, and_21);
+			}
+			/* LFSR 1 et 3 */
+			else if ((xor1 != xor2) && (xor1 == xor3)) {
+				lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor1, and_22);
+			}
+			/* LFSR 2 et 3 */
+			else if ((xor2 == xor3) && (xor1 != xor3)) {
+				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
+				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor2, and_22);
+			}
 		}
 		return lfsr;
 	}

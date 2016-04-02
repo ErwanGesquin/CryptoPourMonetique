@@ -38,9 +38,10 @@ public class TpCrypto {
 
 		iv = d.getCommonKey();
 		lfsr = new LFSR(iv);
-		long result = lfsr.cypher_afive();
+		long result = lfsr.get_first_and(lfsr); 
+		lfsr = lfsr.cypher_afive(lfsr);
 
-		System.out.println("VI = " + Long.toBinaryString(lfsr.VI));
+		System.out.println("\nVI = " + Long.toBinaryString(lfsr.VI));
 		System.out.println("LFSR 1 = " + Long.toBinaryString(lfsr.LFSR1));
 		System.out.println("LFSR 2 = " + Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
@@ -48,12 +49,17 @@ public class TpCrypto {
 
 		lfsr = lfsr.cycle_64(lfsr);
 
-		System.out.println("VI = " + Long.toBinaryString(lfsr.VI));
-		System.out.println("LFSR 1 = " + Long.toBinaryString(lfsr.LFSR1));
+		System.out.println("\nLFSR 1 = " + Long.toBinaryString(lfsr.LFSR1));
 		System.out.println("LFSR 2 = " + Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
 		System.out.println("Chiffré = " + result);
 
+		lfsr = lfsr.cycle_100(lfsr);
+
+		System.out.println("\nLFSR 1 = " + Long.toBinaryString(lfsr.LFSR1));
+		System.out.println("LFSR 2 = " + Long.toBinaryString(lfsr.LFSR2));
+		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
+		System.out.println("Chiffré = " + result);
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",
 		// Integer.toBinaryString(LFSR1)).replace(' ', '0');
