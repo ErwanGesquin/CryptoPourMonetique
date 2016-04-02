@@ -21,12 +21,12 @@ public class DiffieHelmann {
 	//Constructors
 	public DiffieHelmann(long g, long a, long b) {
 		Random rnd = new Random();
-		long x = 0;
-		do{
-			x = rnd.nextLong();
-		}while(! is_premier(x));
+		//long x = 0;
+		//do{
+			//x = rnd.nextLong();
+		//}while(! is_prime(x));
 		
-		this.p = x;
+		this.p = rnd.nextLong();
 		this.g = g;
 		this.a = a;
 		this.b = b;
@@ -98,7 +98,7 @@ public class DiffieHelmann {
 		this.key = key;
 	}
 	
-	private boolean is_premier(long a){
+	/**private boolean is_prime(long a){
 		boolean premier = true;
 		
 		if(a < 0){
@@ -113,7 +113,7 @@ public class DiffieHelmann {
 		}
 		
 		return premier;
-	}
+	}*/
 
 	/**
 	 * Génère l'élément Ka ou Kb à envoyer à l'interlocuteur.
