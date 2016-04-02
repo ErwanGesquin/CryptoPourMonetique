@@ -20,6 +20,7 @@ public class LFSR {
 	long mask_20;
 	long mask_21;
 	long mask_22;
+	long mask_64;
 
 	long and_18;
 	long and_21;
@@ -33,24 +34,25 @@ public class LFSR {
 		super();
 
 		this.VI = iv;
-		this.LFSR1 = 0;
-		this.LFSR2 = 0;
-		this.LFSR3 = 0;
+		this.LFSR1 = 0L;
+		this.LFSR2 = 0L;
+		this.LFSR3 = 0L;
 		
-		this.mask_7 = 0x40;
-		this.mask_8 = 0x80;
-		this.mask_10 = 0xA0;
-		this.mask_13 = 0x1000;
-		this.mask_16 = 0x10000;
-		this.mask_17 = 0x20000;
-		this.mask_18 = 0x40000;
-		this.mask_20 = 0x80000;
-		this.mask_21 = 0x100000;
-		this.mask_22 = 0x200000;
+		this.mask_7 = 0x40L;
+		this.mask_8 = 0x80L;
+		this.mask_10 = 0xA0L;
+		this.mask_13 = 0x1000L;
+		this.mask_16 = 0x10000L;
+		this.mask_17 = 0x20000L;
+		this.mask_18 = 0x40000L;
+		this.mask_20 = 0x80000L;
+		this.mask_21 = 0x100000L;
+		this.mask_22 = 0x200000L;
+		this.mask_64 = 0x8000000000000000L;
 		
-		this.and_18 = 0xFFFFF;
-		this.and_21 = 0x7FFFFF;
-		this.and_22 = 0xFFFFFF;
+		this.and_18 = 0xFFFFFL;
+		this.and_21 = 0x7FFFFFL;
+		this.and_22 = 0xFFFFFFL;
 	}
 
 
@@ -139,7 +141,12 @@ public class LFSR {
 		return result;
 	}
 	
-	public long cycle_64(){
+	public long cycle_64(long init_mask){
+		int i;
+		
+		for (i=0;i < 64; i++){
+			init_mask /= 2;
+		}
 		
 		return 0;
 	}
