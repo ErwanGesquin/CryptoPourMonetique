@@ -1,3 +1,8 @@
+import java.math.BigInteger;
+
+
+
+
 /**
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
@@ -264,11 +269,25 @@ public class LFSR {
 	 * @param lfsr
 	 * @return
 	 */
-	public LFSR cycle_228(LFSR lfsr) {
+	public BigInteger cycle_228(LFSR lfsr) {
 		long xor1, xor2, xor3;
 		int i;
-
+		/*byte[] CDRIVES = hexStringToByteArray(	"FFFF FFFF FFFF FFFF FFFF " +
+												"FFFF FFFF FFFF FFFF FFFF " +
+												"FFFF FFFF FFFF FFFF FFFF" +
+												"FFFF FFFF FFFF FFFF FFFF" +
+												"FFFF FFFF FFFF FFFF FFFF" +
+												"FFFF FFFF FFFF FF");
+		*/
+		
+		BigInteger and_228 = new BigInteger("1111111111111111111111111111111111"); /*228 * 1*/
+		BigInteger key;
+		
+		key = new BigInteger("0");
+		
 		for (i = 0; i < 228; i++) {
+			key.add(BigInteger.valueOf(lfsr.get_first_and(lfsr)));
+			key.shiftLeft(1);
 			/* XOR sur les 3 LFSR selon les cases désignés */
 			xor1 = xor_LFSR1(lfsr.LFSR1);
 			xor2 = xor_LFSR2(lfsr.LFSR2);
@@ -296,7 +315,9 @@ public class LFSR {
 				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
 				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor2, and_22);
 			}
+			
 		}
-		return lfsr;
+		
+		return key.shiftRight(1).and(and_228);
 	}
 }

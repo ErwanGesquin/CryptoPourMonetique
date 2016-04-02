@@ -2,7 +2,7 @@ public class TpCrypto {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+/*
 		// On créé l'objet Diffie-Helmann
 		DiffieHelmann d = new DiffieHelmann(71, 0, 0);
 
@@ -31,12 +31,13 @@ public class TpCrypto {
 		d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(), d.getP()));
 		System.out.println("Bob: Common key= " + d.getCommonKey());
 		System.out.println("p= " + d.getP());
-
+*/
 		/* ================================================= */
 		long iv;
 		LFSR lfsr;
 
-		iv = d.getCommonKey();
+		//iv = d.getCommonKey();
+		iv = 44556131684689L;
 		lfsr = new LFSR(iv);
 		long result = lfsr.get_first_and(lfsr); 
 		lfsr = lfsr.cypher_afive(lfsr);
@@ -60,6 +61,10 @@ public class TpCrypto {
 		System.out.println("LFSR 2 = " + Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
 		System.out.println("Chiffré = " + result);
+		
+		
+		System.out.println(lfsr.cycle_228(lfsr));
+
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",
 		// Integer.toBinaryString(LFSR1)).replace(' ', '0');

@@ -122,7 +122,7 @@ public class DiffieHelmann {
 	
 	private long euler(long a){
 		long ie = 0;
-		for(int i = 0; i < a; i++){
+		for(long i = 0; i < a; i++){
 			if(euclid(i, a) == 1){
 				ie++;
 			}
