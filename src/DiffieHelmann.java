@@ -28,7 +28,7 @@ public class DiffieHelmann {
 		}while(! is_prime(x) && x <= 0);
 		
 		this.p = x;
-		this.g = g;
+		this.g = euler(p);
 		this.a = a;
 		this.b = b;
 	}
@@ -109,6 +109,26 @@ public class DiffieHelmann {
 		b = BigInteger.valueOf(a);
 		return b.isProbablePrime(100);
 	}
+	
+	private long euclid(long a, long b){
+		long r;
+		while(b != 0){
+			r = a % b;
+			a = b;
+			b = r;
+		}
+		return Math.abs(a);
+	}
+	
+	private long euler(long a){
+		long ie = 0;
+		for(int i = 0; i < a; i++){
+			if(euclid(i, a) == 1){
+				ie++;
+			}
+		}
+		return ie;
+	}
 
 	/**
 	 * Génère l'élément Ka ou Kb à envoyer à l'interlocuteur.
@@ -118,7 +138,7 @@ public class DiffieHelmann {
 	 * @return Ka ou Kb
 	 */
 	public long generate_private_key(long a, long g, long p){
-		return (long) Math.pow(a, g) % p;
+		return (long) Math.pow(g, a) % p;
 	}
 	
 
