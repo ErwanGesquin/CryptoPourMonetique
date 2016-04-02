@@ -139,8 +139,8 @@ public class LFSR {
 		return result;
 	}
 	
-	public long cypher_acive_cycle(){
-		return 0;
+	public long cycle_64(){
 		
+		return 0;
 	}
 }
