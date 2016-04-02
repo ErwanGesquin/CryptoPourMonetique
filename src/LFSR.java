@@ -103,6 +103,11 @@ public class LFSR {
 		return LFSR;
 	}
 
+	/**
+	 * Renvoie le resultat de l'opération "ET" du premier bit entre les 3 LFSR
+	 * @param lfsr
+	 * @return
+	 */
 	public long get_first_and(LFSR lfsr){
 		long bit18, bit21, bit22;
 
@@ -120,7 +125,6 @@ public class LFSR {
 	 * @return
 	 */
 	public LFSR cypher_afive(LFSR lfsr) {
-		long bit18, bit21, bit22;
 		long xor1, xor2, xor3;
 		/* XOR sur les 3 LFSR selon les cases désignés */
 		xor1 = xor_LFSR1(lfsr.LFSR1);
@@ -184,7 +188,7 @@ public class LFSR {
 	}
 
 	/**
-	 * 
+	 * Effectue 22 cycle de rotation basé sur le nombre de "frame" 
 	 * @param lfsr
 	 * @param frame_nb
 	 *            (1 frame = 228 bits), frame_nb sur 22 bits
@@ -214,11 +218,57 @@ public class LFSR {
 		return lfsr;
 	}
 
+	/**
+	 * Effectue 100 cycle de rotation en "interne"
+	 * @param lfsr
+	 * @return
+	 */
 	public LFSR cycle_100(LFSR lfsr) {
 		long xor1, xor2, xor3;
 		int i;
 
 		for (i = 0; i < 100; i++) {
+			/* XOR sur les 3 LFSR selon les cases désignés */
+			xor1 = xor_LFSR1(lfsr.LFSR1);
+			xor2 = xor_LFSR2(lfsr.LFSR2);
+			xor3 = xor_LFSR3(lfsr.LFSR3);
+
+			/* Gestion des 4 cas cherchant la mojorité des bits */
+			/* Tous identiques */
+			if ((xor1 == xor2) && (xor1 == xor3)) {
+				lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor1, and_21);
+				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor1, and_22);
+			}
+			/* LFSR 1 et 2 */
+			else if ((xor1 == xor2) && (xor1 != xor3)) {
+				lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor1, and_21);
+			}
+			/* LFSR 1 et 3 */
+			else if ((xor1 != xor2) && (xor1 == xor3)) {
+				lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
+				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor1, and_22);
+			}
+			/* LFSR 2 et 3 */
+			else if ((xor2 == xor3) && (xor1 != xor3)) {
+				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
+				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor2, and_22);
+			}
+		}
+		return lfsr;
+	}
+	
+	/**
+	 * Renvoie la clef  (228 bits)
+	 * @param lfsr
+	 * @return
+	 */
+	public LFSR cycle_228(LFSR lfsr) {
+		long xor1, xor2, xor3;
+		int i;
+
+		for (i = 0; i < 228; i++) {
 			/* XOR sur les 3 LFSR selon les cases désignés */
 			xor1 = xor_LFSR1(lfsr.LFSR1);
 			xor2 = xor_LFSR2(lfsr.LFSR2);
