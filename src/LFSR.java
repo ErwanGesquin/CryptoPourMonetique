@@ -37,7 +37,7 @@ public class LFSR {
 		this.LFSR1 = 0L;
 		this.LFSR2 = 0L;
 		this.LFSR3 = 0L;
-		
+
 		this.mask_7 = 0x40L;
 		this.mask_8 = 0x80L;
 		this.mask_10 = 0xA0L;
@@ -49,12 +49,11 @@ public class LFSR {
 		this.mask_21 = 0x100000L;
 		this.mask_22 = 0x200000L;
 		this.mask_64 = 0x8000000000000000L;
-		
+
 		this.and_18 = 0xFFFFFL;
 		this.and_21 = 0x7FFFFFL;
 		this.and_22 = 0xFFFFFFL;
 	}
-
 
 	/**
 	 * XOR pour la premiere LFSR
@@ -106,6 +105,7 @@ public class LFSR {
 
 	/**
 	 * Implémente le schéma du TP
+	 * 
 	 * @return
 	 */
 	public long cypher_afive() {
@@ -140,22 +140,22 @@ public class LFSR {
 
 		return result;
 	}
-	
-	public LFSR cycle_64(LFSR lfsr){
+
+	public LFSR cycle_64(LFSR lfsr) {
 		int i;
 		long xor1, xor2, xor3;
-		long init_mask =  mask_64;
-		
-		for (i=64;i >= 0; i--){
-			xor1 =  xor_LFSR1(lfsr.LFSR1) ^ (init_mask & VI)>>i;
+		long init_mask = mask_64;
+
+		for (i = 64; i > 0; i--) {
+			xor1 = xor_LFSR1(lfsr.LFSR1) ^ (init_mask & VI) >> i;
 			lfsr.LFSR1 = shift_LFSR(lfsr.LFSR1, xor1, and_18);
-			
-			xor2 =  xor_LFSR2(lfsr.LFSR2) ^ (init_mask & VI)>>i;
+
+			xor2 = xor_LFSR2(lfsr.LFSR2) ^ (init_mask & VI) >> i;
 			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
-			
-			xor3 =  xor_LFSR1(lfsr.LFSR3) ^ (init_mask & VI)>>i;
+
+			xor3 = xor_LFSR3(lfsr.LFSR3) ^ (init_mask & VI) >> i;
 			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor3, and_22);
-						
+
 			init_mask /= 2;
 		}
 		return lfsr;
