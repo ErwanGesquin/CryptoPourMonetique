@@ -31,15 +31,19 @@ public class TpCrypto {
 		d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(), d.getP()));
 		System.out.println(d.getCommonKey());
 		
-		int IV = 54;
+		
+		/*=================================================*/
+		long iv;
 		LFSR lfsr;
 				
-		lfsr = new LFSR(IV);
-		int result = lfsr.CypherAFive();
+		iv = d.getCommonKey().intValue();
+		lfsr = new LFSR(iv);
+		long result = lfsr.cypher_afive();
 		
-		System.out.println("LFSR 1 = "+Integer.toBinaryString(lfsr.LFSR1));
-		System.out.println("LFSR 2 = "+Integer.toBinaryString(lfsr.LFSR2));
-		System.out.println("LFSR 3 = "+Integer.toBinaryString(lfsr.LFSR3));
+		System.out.println(lfsr.VI);
+		System.out.println("LFSR 1 = "+Long.toBinaryString(lfsr.LFSR1));
+		System.out.println("LFSR 2 = "+Long.toBinaryString(lfsr.LFSR2));
+		System.out.println("LFSR 3 = "+Long.toBinaryString(lfsr.LFSR3));
 		System.out.println("Chiffré = "+result);
 
 		// Impossible d'imprimer le binaire formaté

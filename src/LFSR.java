@@ -3,7 +3,29 @@
  */
 
 public class LFSR {
-	public LFSR(int iv) {
+	long VI;
+
+	/* Initialisation à 1 */
+	long LFSR1;
+	long LFSR2;
+	long LFSR3;
+
+	long mask_7;
+	long mask_8;
+	long mask_10;
+	long mask_13;
+	long mask_16;
+	long mask_17;
+	long mask_18;
+	long mask_20;
+	long mask_21;
+	long mask_22;
+
+	long and_18;
+	long and_21;
+	long and_22;
+
+	public LFSR(long iv) {
 
 		/*
 		 * TODO: Chiffrer un string puis un fichier
@@ -14,6 +36,7 @@ public class LFSR {
 		this.LFSR1 = 0;
 		this.LFSR2 = 0;
 		this.LFSR3 = 0;
+		
 		this.mask_7 = 0x40;
 		this.mask_8 = 0x80;
 		this.mask_10 = 0xA0;
@@ -24,32 +47,12 @@ public class LFSR {
 		this.mask_20 = 0x80000;
 		this.mask_21 = 0x100000;
 		this.mask_22 = 0x200000;
+		
 		this.and_18 = 0xFFFFF;
 		this.and_21 = 0x7FFFFF;
 		this.and_22 = 0xFFFFFF;
 	}
 
-	int VI = 54;
-
-	/* Initialisation à 1 */
-	int LFSR1 = 0x3FFFFF;
-	int LFSR2 = 0x3FFFFF;
-	int LFSR3 = 0x3FFFFF;
-
-	int mask_7 = 0x40;
-	int mask_8 = 0x80;
-	int mask_10 = 0xA0;
-	int mask_13 = 0x1000;
-	int mask_16 = 0x10000;
-	int mask_17 = 0x20000;
-	int mask_18 = 0x40000;
-	int mask_20 = 0x80000;
-	int mask_21 = 0x100000;
-	int mask_22 = 0x200000;
-
-	int and_18 = 0xFFFFF;
-	int and_21 = 0x7FFFFF;
-	int and_22 = 0xFFFFFF;
 
 	/**
 	 * XOR pour la premiere LFSR
@@ -57,7 +60,7 @@ public class LFSR {
 	 * @param LFSR1
 	 * @return Dernier bit de l'opération
 	 */
-	public int xor_LFSR1(int LFSR1) {
+	public long xor_LFSR1(long LFSR1) {
 		return ((LFSR1 & mask_18) >> 18) ^ ((LFSR1 & mask_17) >> 17)
 				^ ((LFSR1 & mask_16) >> 16) ^ ((LFSR1 & mask_13) >> 13);
 	}
@@ -68,7 +71,7 @@ public class LFSR {
 	 * @param LFSR2
 	 * @return Dernier bit de l'opération
 	 */
-	public int xor_LFSR2(int LFSR2) {
+	public long xor_LFSR2(long LFSR2) {
 		return ((LFSR2 & mask_21) >> 21) ^ ((LFSR2 & mask_20) >> 20);
 	}
 
@@ -78,7 +81,7 @@ public class LFSR {
 	 * @param LFSR3
 	 * @return Dernier bit de l'opération
 	 */
-	public int xor_LFSR3(int LFSR3) {
+	public long xor_LFSR3(long LFSR3) {
 		return ((LFSR3 & mask_22) >> 22) ^ ((LFSR3 & mask_21) >> 21)
 				^ ((LFSR3 & mask_20) >> 20) ^ ((LFSR3 & mask_17) >> 17);
 	}
@@ -91,7 +94,7 @@ public class LFSR {
 	 * @param and_mask
 	 * @return
 	 */
-	public int shift_LFSR(int LFSR, int bit, int and_mask) {
+	public long shift_LFSR(long LFSR, long bit, long and_mask) {
 		LFSR = LFSR << 1;
 		LFSR = bit;
 		LFSR = LFSR & and_mask;
@@ -103,10 +106,10 @@ public class LFSR {
 	 * Implémente le schéma du TP
 	 * @return
 	 */
-	public int cypher_afive() {
-		int bit18, bit21, bit22;
-		int xor1, xor2, xor3;
-		int result;
+	public long cypher_afive() {
+		long bit18, bit21, bit22;
+		long xor1, xor2, xor3;
+		long result;
 
 		bit18 = (LFSR1 & and_18) >> 18;
 		bit21 = (LFSR2 & and_21) >> 21;
@@ -136,7 +139,7 @@ public class LFSR {
 		return result;
 	}
 	
-	public int cypher_acive_cycle(){
+	public long cypher_acive_cycle(){
 		return 0;
 		
 	}
