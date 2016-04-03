@@ -113,15 +113,15 @@ public class LFSR {
 	 * @param lfsr
 	 * @return
 	 */
-	public long get_first_and(LFSR lfsr){
+	public long get_first_bit_xor(LFSR lfsr){
 		long bit18, bit21, bit22;
 
 		/* Stockage du bit le plus à droite */
-		bit18 = (LFSR1 & and_18) >> 18;
-		bit21 = (LFSR2 & and_21) >> 21;
-		bit22 = (LFSR3 & and_22) >> 22;
+		bit18 = (lfsr.LFSR1 & and_18) >> 18;
+		bit21 = (lfsr.LFSR2 & and_21) >> 21;
+		bit22 = (lfsr.LFSR3 & and_22) >> 22;
 		
-		return bit18 & bit21 & bit22;
+		return bit18 ^ bit21 ^ bit22;
 	}
 	
 	/**
@@ -286,7 +286,7 @@ public class LFSR {
 		key = new BigInteger("0");
 		
 		for (i = 0; i < 228; i++) {
-			key.add(BigInteger.valueOf(lfsr.get_first_and(lfsr)));
+			key.add(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			key.shiftLeft(1);
 			/* XOR sur les 3 LFSR selon les cases désignés */
 			xor1 = xor_LFSR1(lfsr.LFSR1);

@@ -39,7 +39,7 @@ public class TpCrypto {
 		//iv = d.getCommonKey();
 		iv = 44556131684689L;
 		lfsr = new LFSR(iv);
-		long result = lfsr.get_first_and(lfsr); 
+		long result = lfsr.get_first_bit_xor(lfsr); 
 		lfsr = lfsr.cypher_afive(lfsr);
 
 		System.out.println("\nVI = " + Long.toBinaryString(lfsr.VI));
@@ -63,7 +63,7 @@ public class TpCrypto {
 		System.out.println("Chiffré = " + result);
 		
 		
-		System.out.println(lfsr.cycle_228(lfsr));
+		System.out.println("\nClef = "+lfsr.cycle_228(lfsr));
 
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",
