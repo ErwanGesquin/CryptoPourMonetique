@@ -326,4 +326,23 @@ public class LFSR {
 
 		return key.shiftRight(1).and(and_228);
 	}
+	
+	public BigInteger cypher_228(BigInteger key, BigInteger msg){
+		BigInteger cyphered;
+		int i;
+		Random rnd = new Random(1);
+		BigInteger and_228 = new BigInteger(228,rnd); /* 228 * 1 */
+	
+		/* Crée un binaire de 228 "1"*/
+		for (i = 0; i < 228; i++){
+			and_228 = and_228.setBit(i);
+		}
+		
+		cyphered = key;
+		
+		cyphered.xor(msg);
+		cyphered.and(and_228);
+		
+		return cyphered;
+	}
 }
