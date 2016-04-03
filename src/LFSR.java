@@ -1,4 +1,8 @@
 import java.math.BigInteger;
+import java.util.Random;
+
+
+
 
 /**
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
@@ -273,22 +277,21 @@ public class LFSR {
 	public BigInteger cycle_228(LFSR lfsr) {
 		long xor1, xor2, xor3;
 		int i;
-		/*
-		 * byte[] CDRIVES = hexStringToByteArray( "FFFF FFFF FFFF FFFF FFFF " +
-		 * "FFFF FFFF FFFF FFFF FFFF " + "FFFF FFFF FFFF FFFF FFFF" +
-		 * "FFFF FFFF FFFF FFFF FFFF" + "FFFF FFFF FFFF FFFF FFFF" +
-		 * "FFFF FFFF FFFF FF");
-		 */
-
-		BigInteger and_228 = new BigInteger(
-				"1111111111111111111111111111111111"); /* 228 * 1 */
+		
+		Random rnd = new Random(1);
+		BigInteger and_228 = new BigInteger(228,rnd); /* 228 * 1 */
 		BigInteger key;
+	
+		/* Crée un binaire de 228 "1"*/
+		for (i = 0; i < 228; i++){
+			and_228 = and_228.setBit(i);
+		}
 
 		key = new BigInteger("0");
-
 		for (i = 0; i < 228; i++) {
-			key.add(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			key.shiftLeft(1);
+			key = key.add(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
+			System.out.println(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			/* XOR sur les 3 LFSR selon les cases désignés */
 			xor1 = xor_LFSR1(lfsr.LFSR1);
 			xor2 = xor_LFSR2(lfsr.LFSR2);
@@ -318,6 +321,8 @@ public class LFSR {
 			}
 
 		}
+		System.out.println(and_228.toString(2));
+		System.out.println(key.toString(2));
 
 		return key.shiftRight(1).and(and_228);
 	}

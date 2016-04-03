@@ -63,7 +63,7 @@ public class TpCrypto {
 		System.out.println("Chiffré = " + result);
 		
 		
-		System.out.println("\nClef = "+lfsr.cycle_228(lfsr));
+		System.out.println("\nClef = "+lfsr.cycle_228(lfsr).toString(2));
 
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",
