@@ -1,8 +1,5 @@
 import java.math.BigInteger;
 
-
-
-
 /**
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
@@ -67,8 +64,8 @@ public class LFSR {
 	 * @return Dernier bit de l'opération
 	 */
 	public long xor_LFSR1(long LFSR1) {
-		return ((LFSR1 & mask_18) >> 18) ^ ((LFSR1 & mask_17) >> 17)
-				^ ((LFSR1 & mask_16) >> 16) ^ ((LFSR1 & mask_13) >> 13);
+		return ((LFSR1 >> 18) & 1) ^ ((LFSR1 >> 17) & 1) ^ ((LFSR1 >> 16) & 1)
+				^ ((LFSR1 >> 13) & 1);
 	}
 
 	/**
@@ -78,7 +75,7 @@ public class LFSR {
 	 * @return Dernier bit de l'opération
 	 */
 	public long xor_LFSR2(long LFSR2) {
-		return ((LFSR2 & mask_21) >> 21) ^ ((LFSR2 & mask_20) >> 20);
+		return ((LFSR2 >> 21) & 1) ^ ((LFSR2 >> 20) & 1);
 	}
 
 	/**
@@ -88,8 +85,8 @@ public class LFSR {
 	 * @return Dernier bit de l'opération
 	 */
 	public long xor_LFSR3(long LFSR3) {
-		return ((LFSR3 & mask_22) >> 22) ^ ((LFSR3 & mask_21) >> 21)
-				^ ((LFSR3 & mask_20) >> 20) ^ ((LFSR3 & mask_17) >> 17);
+		return ((LFSR3 >> 22) & 1) ^ ((LFSR3 >> 21) & 1) ^ ((LFSR3 >> 20) & 1)
+				^ ((LFSR3 >> 17) & 1);
 	}
 
 	/**
@@ -110,20 +107,21 @@ public class LFSR {
 
 	/**
 	 * Renvoie le resultat de l'opération "ET" du premier bit entre les 3 LFSR
+	 * 
 	 * @param lfsr
 	 * @return
 	 */
-	public long get_first_bit_xor(LFSR lfsr){
+	public long get_first_bit_xor(LFSR lfsr) {
 		long bit18, bit21, bit22;
 
 		/* Stockage du bit le plus à droite */
-		bit18 = (lfsr.LFSR1 & and_18) >> 18;
-		bit21 = (lfsr.LFSR2 & and_21) >> 21;
-		bit22 = (lfsr.LFSR3 & and_22) >> 22;
-		
+		bit18 = (lfsr.LFSR1 >> 18) & 1;
+		bit21 = (lfsr.LFSR2 >> 21) & 1;
+		bit22 = (lfsr.LFSR3 >> 22) & 1;
+		/*System.out.println("bits: " + bit18 + " : " + bit21 + " : " + bit22);*/
 		return bit18 ^ bit21 ^ bit22;
 	}
-	
+
 	/**
 	 * Implémente le schéma du TP
 	 * 
@@ -158,7 +156,7 @@ public class LFSR {
 			lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
 			lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor2, and_22);
 		}
-		
+
 		return lfsr;
 	}
 
@@ -193,7 +191,8 @@ public class LFSR {
 	}
 
 	/**
-	 * Effectue 22 cycle de rotation basé sur le nombre de "frame" 
+	 * Effectue 22 cycle de rotation basé sur le nombre de "frame"
+	 * 
 	 * @param lfsr
 	 * @param frame_nb
 	 *            (1 frame = 228 bits), frame_nb sur 22 bits
@@ -225,6 +224,7 @@ public class LFSR {
 
 	/**
 	 * Effectue 100 cycle de rotation en "interne"
+	 * 
 	 * @param lfsr
 	 * @return
 	 */
@@ -263,28 +263,29 @@ public class LFSR {
 		}
 		return lfsr;
 	}
-	
+
 	/**
-	 * Renvoie la clef  (228 bits)
+	 * Renvoie la clef (228 bits)
+	 * 
 	 * @param lfsr
 	 * @return
 	 */
 	public BigInteger cycle_228(LFSR lfsr) {
 		long xor1, xor2, xor3;
 		int i;
-		/*byte[] CDRIVES = hexStringToByteArray(	"FFFF FFFF FFFF FFFF FFFF " +
-												"FFFF FFFF FFFF FFFF FFFF " +
-												"FFFF FFFF FFFF FFFF FFFF" +
-												"FFFF FFFF FFFF FFFF FFFF" +
-												"FFFF FFFF FFFF FFFF FFFF" +
-												"FFFF FFFF FFFF FF");
-		*/
-		
-		BigInteger and_228 = new BigInteger("1111111111111111111111111111111111"); /*228 * 1*/
+		/*
+		 * byte[] CDRIVES = hexStringToByteArray( "FFFF FFFF FFFF FFFF FFFF " +
+		 * "FFFF FFFF FFFF FFFF FFFF " + "FFFF FFFF FFFF FFFF FFFF" +
+		 * "FFFF FFFF FFFF FFFF FFFF" + "FFFF FFFF FFFF FFFF FFFF" +
+		 * "FFFF FFFF FFFF FF");
+		 */
+
+		BigInteger and_228 = new BigInteger(
+				"1111111111111111111111111111111111"); /* 228 * 1 */
 		BigInteger key;
-		
+
 		key = new BigInteger("0");
-		
+
 		for (i = 0; i < 228; i++) {
 			key.add(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			key.shiftLeft(1);
@@ -315,9 +316,9 @@ public class LFSR {
 				lfsr.LFSR2 = shift_LFSR(lfsr.LFSR2, xor2, and_21);
 				lfsr.LFSR3 = shift_LFSR(lfsr.LFSR3, xor2, and_22);
 			}
-			
+
 		}
-		
+
 		return key.shiftRight(1).and(and_228);
 	}
 }
