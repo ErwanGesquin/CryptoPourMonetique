@@ -289,7 +289,7 @@ public class LFSR {
 
 		key = new BigInteger("0");
 		for (i = 0; i < 228; i++) {
-			key.shiftLeft(1);
+			key = key.shiftLeft(1);
 			key = key.add(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			System.out.println(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			/* XOR sur les 3 LFSR selon les cases désignés */
