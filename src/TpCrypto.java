@@ -83,10 +83,8 @@ public class TpCrypto {
 		/* Déchiffrement du chiffré */
 		BigInteger unphered = lfsr.cypher_xor(key, read);
 		
-		
-		
-		System.out.println("\nClair   = " + unphered.toString());
-		System.out.println(new String(unphered.toByteArray()));
+		System.out.println("\nClair (chiffre)   = " + unphered.toString());
+		System.out.println("\nClair   = " + new String(unphered.toByteArray()));
 		
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",

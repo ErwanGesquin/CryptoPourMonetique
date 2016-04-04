@@ -358,6 +358,7 @@ public class LFSR {
 			try {
 				stream.read(byte_array); /* Stock le fichier vers byte[]*/
 				//System.out.println(new BigInteger(byte_array).toString(2));
+
 				result = new BigInteger(byte_array); /* Transformation en BigInt*/
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -381,7 +382,11 @@ public class LFSR {
 		try {
 			stream = new FileOutputStream(file);
 			try {
-				stream.write(input_value.toByteArray()); /* Stock le fichier en byte[]*/				
+				System.out.println(input_value.toByteArray().length);
+				byte[] byte_array = new byte[input_value.byteValue()];
+				byte_array = input_value.toByteArray();
+				System.out.println(byte_array.length);
+				stream.write(byte_array); /* Stock le fichier en byte[]*/				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
