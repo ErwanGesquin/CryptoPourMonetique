@@ -86,7 +86,7 @@ public class TpCrypto {
 		
 		
 		System.out.println("\nClair   = " + unphered.toString());
-		System.out.println(new String(read.toByteArray()));
+		System.out.println(new String(unphered.toByteArray()));
 		
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",
