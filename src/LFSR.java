@@ -1,6 +1,10 @@
 import java.math.BigInteger;
 import java.util.Random;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 /**
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
@@ -342,5 +346,36 @@ public class LFSR {
 		cyphered = cyphered.and(and_228);
 
 		return cyphered;
+	}
+	
+	
+	public BigInteger file_to_bigint(String file_name){
+		BigInteger result = null;
+		
+		FileInputStream stream = null;
+		File file = new File(file_name);
+		byte[] a = null;
+		try {
+			stream =  new FileInputStream(file);
+			try {
+				stream.read(a, 0, 228);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				stream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return result;
 	}
 }
