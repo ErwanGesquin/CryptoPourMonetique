@@ -65,9 +65,28 @@ public class TpCrypto {
 		BigInteger cyphered = lfsr.cypher_xor(key, new BigInteger("898454354"));
 		System.out.println("\nChiffré = " + cyphered.toString(2));
 
+		/* Lecture d'un message depuis un fichier */
+		BigInteger read = lfsr.file_to_bigint("src/msg.txt");
+		/* Chiffrement */ 
+		cyphered = lfsr.cypher_xor(key, read);
+		
+		System.out.println("\nLecture = " + read.toString(2));
+		System.out.println("\nMessage = " + read.toString());
+		System.out.println("\nChiffré = " + cyphered.toString());
+		
+		/* Ecriture du chiffre dans un fichier */
+		lfsr.bigint_to_file("src/chiffre.txt", cyphered);
+		
+		read = lfsr.file_to_bigint("src/chiffre.txt");
+
+		
+		/* Déchiffrement du chiffré */
+		BigInteger unphered = lfsr.cypher_xor(key, read);
 		
 		
 		
+		System.out.println("\nClair   = " + unphered.toString());
+		System.out.println(new String(read.toByteArray()));
 		
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",
