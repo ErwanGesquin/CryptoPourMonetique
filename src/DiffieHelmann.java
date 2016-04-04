@@ -20,15 +20,9 @@ public class DiffieHelmann {
 	private long key;
 	
 	//Constructors
-	public DiffieHelmann(long g, long a, long b) {
-		Random rnd = new Random();
-		long x = 0;
-		do{
-			x = rnd.nextLong();
-		}while(! is_prime(x) && x <= 0);
-		
-		this.p = x;
-		this.g = euler(p);
+	public DiffieHelmann(long a, long b) {	
+		this.p = generate_prime();
+		this.g = 24;
 		this.a = a;
 		this.b = b;
 	}
@@ -99,36 +93,37 @@ public class DiffieHelmann {
 		this.key = key;
 	}
 	
+	private long square_and_multiply(long n, long pow, long mod){
+		long res = 1;
+		
+		String bin_pow = Long.toBinaryString(pow);
+		for(int i = 0 ; i < bin_pow.length(); i++){
+			res = (res * res) % mod;
+			if(bin_pow.charAt(i) == '1'){
+				res = (res * n) % mod;
+			}
+		}
+		
+		return res;
+	}
+	
 	/**
 	 * Test la primalité de p.
 	 * @param a
 	 * @return true si p est premier
 	 */
-	private boolean is_prime(long a){
-		BigInteger b;
-		b = BigInteger.valueOf(a);
-		return b.isProbablePrime(100);
+	private long generate_prime(){
+		Random rnd = new Random();
+		long ret;
+		BigInteger p;
+		do {
+			p = new BigInteger(64, rnd);
+		}while(p.isProbablePrime(100));
+		
+		ret = p.longValue();
+		return ret;
 	}
 	
-	private long euclid(long a, long b){
-		long r;
-		while(b != 0){
-			r = a % b;
-			a = b;
-			b = r;
-		}
-		return Math.abs(a);
-	}
-	
-	private long euler(long a){
-		long ie = 0;
-		for(long i = 0; i < a; i++){
-			if(euclid(i, a) == 1){
-				ie++;
-			}
-		}
-		return ie;
-	}
 
 	/**
 	 * Génère l'élément Ka ou Kb à envoyer à l'interlocuteur.
