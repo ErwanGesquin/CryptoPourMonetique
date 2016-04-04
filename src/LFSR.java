@@ -1,10 +1,11 @@
 import java.math.BigInteger;
 import java.util.Random;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+
 /**
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
@@ -292,8 +293,6 @@ public class LFSR {
 		for (i = 0; i < 228; i++) {
 			key = key.shiftLeft(1);
 			key = key.add(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
-			System.out
-					.println(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			/* XOR sur les 3 LFSR selon les cases désignés */
 			xor1 = xor_LFSR1(lfsr.LFSR1);
 			xor2 = xor_LFSR2(lfsr.LFSR2);
@@ -347,35 +346,53 @@ public class LFSR {
 
 		return cyphered;
 	}
-	
-	
-	public BigInteger file_to_bigint(String file_name){
-		BigInteger result = null;
-		
+
+	public BigInteger file_to_bigint(String file_name) {
 		FileInputStream stream = null;
+		BigInteger result = new BigInteger("0");
 		File file = new File(file_name);
-		byte[] a = null;
+		byte[] byte_array = new byte[(int) file.length()];
+		
 		try {
-			stream =  new FileInputStream(file);
+			stream = new FileInputStream(file);
 			try {
-				stream.read(a, 0, 228);
+				stream.read(byte_array); /* Stock le fichier vers byte[]*/
+				//System.out.println(new BigInteger(byte_array).toString(2));
+				result = new BigInteger(byte_array); /* Transformation en BigInt*/
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				stream.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
-		
+
 		return result;
+	}
+	
+	public void bigint_to_file(String file_name, BigInteger input_value){
+		FileOutputStream stream = null;
+		File file = new File(file_name);		
+		try {
+			stream = new FileOutputStream(file);
+			try {
+				stream.write(input_value.toByteArray()); /* Stock le fichier en byte[]*/				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
