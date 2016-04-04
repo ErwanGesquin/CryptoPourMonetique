@@ -22,7 +22,7 @@ public class DiffieHelmann {
 	//Constructors
 	public DiffieHelmann(long a, long b) {	
 		this.p = generate_prime();
-		this.g = 24;
+		this.g = p-1;
 		this.a = a;
 		this.b = b;
 	}
@@ -93,19 +93,7 @@ public class DiffieHelmann {
 		this.key = key;
 	}
 	
-	private long square_and_multiply(long n, long pow, long mod){
-		long res = 1;
-		
-		String bin_pow = Long.toBinaryString(pow);
-		for(int i = 0 ; i < bin_pow.length(); i++){
-			res = (res * res) % mod;
-			if(bin_pow.charAt(i) == '1'){
-				res = (res * n) % mod;
-			}
-		}
-		
-		return res;
-	}
+
 	
 	/**
 	 * Test la primalité de p.
@@ -133,7 +121,8 @@ public class DiffieHelmann {
 	 * @return Ka ou Kb
 	 */
 	public long generate_private_key(long a, long g, long p){
-		return (long) Math.pow(g, a) % p;
+		return BigInteger.valueOf(g).modPow(BigInteger.valueOf(a), BigInteger.valueOf(p)).longValue();
+		//return (long) Math.pow(g, a) % p;
 	}
 	
 
