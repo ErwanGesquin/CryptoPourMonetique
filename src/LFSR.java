@@ -1,9 +1,6 @@
 import java.math.BigInteger;
 import java.util.Random;
 
-
-
-
 /**
  * @author Kenzo HOSOMI L'algorithme suivie : https://youtu.be/LgZAI3DdUA4
  */
@@ -122,7 +119,7 @@ public class LFSR {
 		bit18 = (lfsr.LFSR1 >> 18) & 1;
 		bit21 = (lfsr.LFSR2 >> 21) & 1;
 		bit22 = (lfsr.LFSR3 >> 22) & 1;
-		/*System.out.println("bits: " + bit18 + " : " + bit21 + " : " + bit22);*/
+		/* System.out.println("bits: " + bit18 + " : " + bit21 + " : " + bit22); */
 		return bit18 ^ bit21 ^ bit22;
 	}
 
@@ -277,13 +274,13 @@ public class LFSR {
 	public BigInteger cycle_228(LFSR lfsr) {
 		long xor1, xor2, xor3;
 		int i;
-		
+
 		Random rnd = new Random(1);
-		BigInteger and_228 = new BigInteger(228,rnd); /* 228 * 1 */
+		BigInteger and_228 = new BigInteger(228, rnd); /* 228 * 1 */
 		BigInteger key;
-	
-		/* Crée un binaire de 228 "1"*/
-		for (i = 0; i < 228; i++){
+
+		/* Crée un binaire de 228 "1" */
+		for (i = 0; i < 228; i++) {
 			and_228 = and_228.setBit(i);
 		}
 
@@ -291,7 +288,8 @@ public class LFSR {
 		for (i = 0; i < 228; i++) {
 			key = key.shiftLeft(1);
 			key = key.add(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
-			System.out.println(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
+			System.out
+					.println(BigInteger.valueOf(lfsr.get_first_bit_xor(lfsr)));
 			/* XOR sur les 3 LFSR selon les cases désignés */
 			xor1 = xor_LFSR1(lfsr.LFSR1);
 			xor2 = xor_LFSR2(lfsr.LFSR2);
@@ -326,23 +324,23 @@ public class LFSR {
 
 		return key.shiftRight(1).and(and_228);
 	}
-	
-	public BigInteger cypher_228(BigInteger key, BigInteger msg){
+
+	public BigInteger cypher_xor(BigInteger key, BigInteger msg) {
 		BigInteger cyphered;
 		int i;
 		Random rnd = new Random(1);
-		BigInteger and_228 = new BigInteger(228,rnd); /* 228 * 1 */
-	
-		/* Crée un binaire de 228 "1"*/
-		for (i = 0; i < 228; i++){
+		BigInteger and_228 = new BigInteger(228, rnd); /* 228 * 1 */
+
+		/* Crée un binaire de 228 "1" */
+		for (i = 0; i < 228; i++) {
 			and_228 = and_228.setBit(i);
 		}
-		
+
 		cyphered = key;
-		
-		cyphered.xor(msg);
-		cyphered.and(and_228);
-		
+
+		cyphered = cyphered.xor(msg);
+		cyphered = cyphered.and(and_228);
+
 		return cyphered;
 	}
 }

@@ -1,3 +1,7 @@
+import java.math.BigInteger;
+
+import sun.nio.cs.ext.Big5;
+
 public class TpCrypto {
 
 	public static void main(String[] args) {
@@ -62,9 +66,11 @@ public class TpCrypto {
 		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
 		System.out.println("Chiffré = " + result);
 		
-		
-		System.out.println("\nClef = "+lfsr.cycle_228(lfsr).toString(2));
-		
+		BigInteger key = lfsr.cycle_228(lfsr);
+		System.out.println("\nClef    = "+ key.toString(2));
+		BigInteger cyphered = lfsr.cypher_xor(key, new BigInteger("898454354"));
+		System.out.println("\nChiffré = "+ cyphered.toString(2));
+
 
 		// Impossible d'imprimer le binaire formaté
 		// strLFSR1 = String.format("%5s",
