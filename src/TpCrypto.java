@@ -6,7 +6,7 @@ public class TpCrypto {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		/*
 		 // On créé l'objet Diffie-Helmann 
 		 DiffieHelmann d = new DiffieHelmann(0, 0);
 		 
@@ -27,13 +27,13 @@ public class TpCrypto {
 		 d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(),
 		 d.getP())); System.out.println("Bob: Common key= " +
 		 d.getCommonKey()); System.out.println("p= " + d.getP());
-		
+		*/
 		/* ================================================= */
 		long iv;
 		LFSR lfsr;
 
 		// iv = d.getCommonKey();
-		iv = 44556131684689L;
+		iv = 999999999999L;
 		lfsr = new LFSR(iv);
 		long result = lfsr.get_first_bit_xor(lfsr);
 		lfsr = lfsr.cypher_afive(lfsr);
@@ -70,8 +70,9 @@ public class TpCrypto {
 		
 		System.out.println("\nLecture = " + read.toString(2));
 		System.out.println("\nMessage = " + read.toString());
-		System.out.println("\nChiffré = " + cyphered.toString());
-		
+		System.out.println("\nChiffré (int) = " + cyphered.toString());
+		System.out.println("\nChiffré = " + new String(cyphered.toByteArray()));
+
 		/* Ecriture du chiffre dans un fichier */
 		lfsr.bigint_to_file("src/chiffre.txt", cyphered);
 		
@@ -80,8 +81,8 @@ public class TpCrypto {
 		
 		/* Déchiffrement du chiffré */
 		BigInteger unphered = lfsr.cypher_xor(key, read);
-		
-		System.out.println("\nClair (chiffre)   = " + unphered.toString());
+
+		System.out.println("\nClair (int) = " + unphered.toString());
 		System.out.println("\nClair   = " + new String(unphered.toByteArray()));
 		
 		// Impossible d'imprimer le binaire formaté
