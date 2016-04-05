@@ -331,19 +331,33 @@ public class LFSR {
 	public BigInteger cypher_xor(BigInteger key, BigInteger msg) {
 		BigInteger cyphered;
 		int i;
+		int msg_lenth = msg.bitCount();
+
 		Random rnd = new Random(1);
 		BigInteger and_228 = new BigInteger(228, rnd); /* 228 * 1 */
 
-		/* Crée un binaire de 228 "1" */
-		for (i = 0; i < 228; i++) {
+		
+		/* Crée un binaire de 228 bit de "1" */
+		for (i = 0; i < msg_lenth; i++) {
 			and_228 = and_228.setBit(i);
 		}
+		System.out.println("Bitcount = "+and_228.bitCount());
 
-		cyphered = key;
-
-		cyphered = cyphered.xor(msg);
-		cyphered = cyphered.and(and_228);
-
+		cyphered = msg;
+		System.out.println("Bitcount = "+key.bitCount());
+		System.out.println("Bitcount = "+msg.bitCount());
+		
+		while(msg_lenth > 0){
+			cyphered = cyphered.xor(key);
+			//cyphered = cyphered.shiftLeft(key.bitCount());
+			key = key.shiftLeft(key.bitCount());
+			msg_lenth -= key.bitCount();
+		}
+		
+		cyphered = cyphered.shiftRight(key.bitCount());
+		//cyphered = cyphered.and(and_228);
+		
+		//cyphered = cyphered.xor(key);
 		return cyphered;
 	}
 
