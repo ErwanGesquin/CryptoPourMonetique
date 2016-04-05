@@ -40,8 +40,8 @@ public class TpCrypto {
 		LFSR lfsr;
 
 
-		// iv = d.getCommonKey();
-		iv = 999999999999L;
+		iv = d.getCommonKey();
+		//iv = 999999999999L;
 
 		lfsr = new LFSR(iv);
 		long result = lfsr.get_first_bit_xor(lfsr);
@@ -77,10 +77,8 @@ public class TpCrypto {
 		/* Chiffrement */ 
 		cyphered = lfsr.cypher_xor(key, read);
 
-		System.out.println("\nLecture = " + read.toString(2));
-		System.out.println("\nMessage = " + read.toString());
-		System.out.println("\nChiffré (int) = " + cyphered.toString());
-		System.out.println("\nChiffré = " + new String(cyphered.toByteArray()));
+		System.out.println("\nLecture du fichier = " + read.toString(2));
+		System.out.println("\nContenu du fichier (après chiffrement) = " + cyphered.toString(2));
 
 		/* Ecriture du chiffre dans un fichier */
 		lfsr.bigint_to_file("src/chiffre.txt", cyphered);
@@ -93,11 +91,6 @@ public class TpCrypto {
 
 		System.out.println("\nClair (int) = " + unphered.toString());
 		System.out.println("\nClair   = " + new String(unphered.toByteArray()));
-		
-		// Impossible d'imprimer le binaire formaté
-		// strLFSR1 = String.format("%5s",
-		// Integer.toBinaryString(LFSR1)).replace(' ', '0');
-		// System.out.println("%2d", Integer.toBinaryString(1));
 		
 		/* Version avec byte[] */
 		byte[] key_byte = key.toByteArray();
