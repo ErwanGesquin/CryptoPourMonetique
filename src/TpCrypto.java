@@ -77,8 +77,8 @@ public class TpCrypto {
 		
 		/* Ecriture du chiffre dans un fichier */
 		/* !!! Partie qui bug attention !!!*/
-		//lfsr.bigint_to_file("src/chiffre.txt", cyphered);
-		//read = lfsr.file_to_bigint("src/chiffre.txt");
+		//lfsr.bigint_to_file("./chiffre.txt", cyphered);
+		//read = lfsr.file_to_bigint("./chiffre.txt");
 		
 		
 		/* Déchiffrement du chiffré */
@@ -103,7 +103,7 @@ public class TpCrypto {
 		System.out.println("Chiffré (Décimal)   = " + new BigInteger(cyphered_byte).toString());
 		System.out.println("Chiffré (Alphabet)  = " + new String(new BigInteger(cyphered_byte).toByteArray()));
 
-		lfsr.byte_to_file("src/chiffre.txt", cyphered_byte);
+		lfsr.byte_to_file("./chiffre.txt", cyphered_byte);
 		
 		cyphered_byte = lfsr.file_to_byte("./chiffre.txt");
 		byte[] result_byte = lfsr.byte_xor(key_byte, cyphered_byte);
