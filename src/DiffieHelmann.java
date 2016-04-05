@@ -1,9 +1,11 @@
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class DiffieHelmann {
 	
 	//donnees publiques
+	private long q;
 	private long p; //nbr premier
 	private long g; //generateur de(Z/pZ)*
 	
@@ -20,9 +22,10 @@ public class DiffieHelmann {
 	private long key;
 	
 	//Constructors
-	public DiffieHelmann(long a, long b) {	
+	public DiffieHelmann(long a, long b) {
+		this.q = generate_prime();
 		this.p = generate_prime();
-		this.g = 24;
+		this.g = 51;
 		this.a = a;
 		this.b = b;
 	}
@@ -93,19 +96,10 @@ public class DiffieHelmann {
 		this.key = key;
 	}
 	
-	private long square_and_multiply(long n, long pow, long mod){
-		long res = 1;
-		
-		String bin_pow = Long.toBinaryString(pow);
-		for(int i = 0 ; i < bin_pow.length(); i++){
-			res = (res * res) % mod;
-			if(bin_pow.charAt(i) == '1'){
-				res = (res * n) % mod;
-			}
-		}
-		
-		return res;
+	public long getQ(){
+		return this.q;
 	}
+
 	
 	/**
 	 * Test la primalité de p.
@@ -113,15 +107,19 @@ public class DiffieHelmann {
 	 * @return true si p est premier
 	 */
 	private long generate_prime(){
-		Random rnd = new Random();
+		SecureRandom rnd = new SecureRandom();
 		long ret;
-		BigInteger p;
 		do {
-			p = new BigInteger(64, rnd);
-		}while(p.isProbablePrime(100));
+			ret = rnd.nextLong();
+			
+		}while(!BigInteger.valueOf(ret).isProbablePrime(10000) || ret <= 0);
 		
-		ret = p.longValue();
+		
 		return ret;
+	}
+	
+	private long generate_p(long q){
+		return 2 * q + 1;
 	}
 	
 
@@ -133,7 +131,8 @@ public class DiffieHelmann {
 	 * @return Ka ou Kb
 	 */
 	public long generate_private_key(long a, long g, long p){
-		return (long) Math.pow(g, a) % p;
+		return BigInteger.valueOf(g).modPow(BigInteger.valueOf(a), BigInteger.valueOf(p)).longValue();
+		
 	}
 	
 
@@ -146,7 +145,8 @@ public class DiffieHelmann {
 	 * @return La clé partagée par le deux interlocuteurs
 	 */
 	public long generate_common_key(long key, long pow, long p){
-		return (long) Math.pow(key, pow) % p;
+		return BigInteger.valueOf(key).modPow(BigInteger.valueOf(pow), BigInteger.valueOf(p)).longValue();
+		
 	}
 	
 	/**
@@ -156,12 +156,12 @@ public class DiffieHelmann {
 	 * @return L'élément secret
 	 */
 	public long generate_secret_element(long a, long p){
-		Random rnd = new Random();
+		SecureRandom rnd = new SecureRandom();
 		do{
 			a = rnd.nextLong();
 		}while(a <= 0);
 		
-		return a % (p - 2);
+		return a % q;
 	}
 	
 	
