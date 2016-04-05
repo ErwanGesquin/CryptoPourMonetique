@@ -5,7 +5,6 @@ import java.util.Random;
 public class DiffieHelmann {
 	
 	//donnees publiques
-	private long q;
 	private long p; //nbr premier
 	private long g; //generateur de(Z/pZ)*
 	
@@ -23,7 +22,6 @@ public class DiffieHelmann {
 	
 	//Constructors
 	public DiffieHelmann(long a, long b) {
-		this.q = generate_prime();
 		this.p = generate_prime();
 		this.g = 51;
 		this.a = a;
@@ -96,9 +94,6 @@ public class DiffieHelmann {
 		this.key = key;
 	}
 	
-	public long getQ(){
-		return this.q;
-	}
 
 	
 	/**
@@ -118,9 +113,6 @@ public class DiffieHelmann {
 		return ret;
 	}
 	
-	private long generate_p(long q){
-		return 2 * q + 1;
-	}
 	
 
 	/**
@@ -161,7 +153,7 @@ public class DiffieHelmann {
 			a = rnd.nextLong();
 		}while(a <= 0);
 		
-		return a % q;
+		return a % p;
 	}
 	
 	

@@ -1,7 +1,5 @@
 import java.math.BigInteger;
 
-import sun.nio.cs.ext.Big5;
-
 public class TpCrypto {
 
 	public static void main(String[] args) {
@@ -11,9 +9,9 @@ public class TpCrypto {
 		 DiffieHelmann d = new DiffieHelmann(0, 0);
 		 
 		 // On génère les éléments sevrets pour Alice et Bob. // Alice :
-		 d.setA(d.generate_secret_element(5, d.getQ()));
+		 d.setA(d.generate_secret_element(5, d.getP()));
 		 System.out.println(d.getA()); // Bob :
-		 d.setB(d.generate_secret_element(6, d.getQ()));
+		 d.setB(d.generate_secret_element(6, d.getP()));
 		 System.out.println(d.getB());
 		 
 		 // On créé ensuite les clés a transmettre de Alice a Bob et inversement.
@@ -22,19 +20,19 @@ public class TpCrypto {
 		 
 		 // On calcule ensuite la clé secrète de chaque coté // Alice :
 		 d.setCommonKey(d.generate_common_key(d.getKeyB(), d.getA(),
-		 d.getP())); System.out.println("Alice: Common key= " +
-		 d.getCommonKey()); // d.setCommonKey(0); // Bob :
+		 d.getP())); System.out.println("Alice: Common key= " + d.getCommonKey()); 
+		 // d.setCommonKey(0); 
+		 // Bob :
 		 d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(),
-		 d.getP())); System.out.println("Bob: Common key= " +
-		 d.getCommonKey()); System.out.println("p= " + d.getP());
-		 System.out.println("Q= " + d.getQ());
+		 d.getP())); System.out.println("Bob: Common key= " + Long.toBinaryString(d.getCommonKey()));
+		 System.out.println("p= " + d.getP());
 		
 		/* ================================================= */
 		long iv;
 		LFSR lfsr;
 
-		// iv = d.getCommonKey();
-		iv = 44556131684689L;
+		iv = d.getCommonKey();
+		//iv = 44556131684689L;
 		lfsr = new LFSR(iv);
 		long result = lfsr.get_first_bit_xor(lfsr);
 		lfsr = lfsr.cypher_afive(lfsr);
