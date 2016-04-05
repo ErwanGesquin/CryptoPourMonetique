@@ -9,7 +9,7 @@ public class DiffieHelmann {
 	private long g; //generateur de(Z/pZ)*
 	
 	//donnees relatives a Alice
-	private long a; //entier a vérifiant 1 <= a <= p-2
+	private long a; //entier a vérifiant 1 <= a <= p-1
 	private long keyA;
 	
 	//donnees relatives a Bob
@@ -18,7 +18,6 @@ public class DiffieHelmann {
 	
 	//cle commune
 	private long commonKey;
-	private long key;
 	
 	//Constructors
 	public DiffieHelmann(long a, long b) {
@@ -86,20 +85,10 @@ public class DiffieHelmann {
 		this.commonKey = commonKey;
 	}
 
-	public long getKey() {
-		return key;
-	}
 
-	public void setKey(long key) {
-		this.key = key;
-	}
-	
-
-	
 	/**
-	 * Test la primalité de p.
-	 * @param a
-	 * @return true si p est premier
+	 * Générateur de nombres premiers.
+	 * @return un nombre très probablement premier.
 	 */
 	private long generate_prime(){
 		SecureRandom rnd = new SecureRandom();
@@ -113,8 +102,6 @@ public class DiffieHelmann {
 		return ret;
 	}
 	
-	
-
 	/**
 	 * Génère l'élément Ka ou Kb à envoyer à l'interlocuteur.
 	 * @param a
@@ -127,8 +114,6 @@ public class DiffieHelmann {
 		
 	}
 	
-
-
 	/**
 	 * Calcul la clé commune utilisée pour l'chiffrer la suite de l'échange.
 	 * @param key
