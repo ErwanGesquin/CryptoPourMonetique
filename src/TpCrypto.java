@@ -11,9 +11,9 @@ public class TpCrypto {
 		 DiffieHelmann d = new DiffieHelmann(0, 0);
 		 
 		 // On génère les éléments sevrets pour Alice et Bob. // Alice :
-		 d.setA(d.generate_secret_element(5, d.getP()));
+		 d.setA(d.generate_secret_element(5, d.getQ()));
 		 System.out.println(d.getA()); // Bob :
-		 d.setB(d.generate_secret_element(6, d.getP()));
+		 d.setB(d.generate_secret_element(6, d.getQ()));
 		 System.out.println(d.getB());
 		 
 		 // On créé ensuite les clés a transmettre de Alice a Bob et inversement.
@@ -27,6 +27,7 @@ public class TpCrypto {
 		 d.setCommonKey(d.generate_common_key(d.getKeyA(), d.getB(),
 		 d.getP())); System.out.println("Bob: Common key= " +
 		 d.getCommonKey()); System.out.println("p= " + d.getP());
+		 System.out.println("Q= " + d.getQ());
 		
 		/* ================================================= */
 		long iv;
