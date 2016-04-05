@@ -336,28 +336,28 @@ public class LFSR {
 		Random rnd = new Random(1);
 		BigInteger and_228 = new BigInteger(228, rnd); /* 228 * 1 */
 
-		
 		/* Crée un binaire de 228 bit de "1" */
 		for (i = 0; i < msg_lenth; i++) {
 			and_228 = and_228.setBit(i);
 		}
-		System.out.println("Bitcount = "+and_228.bitCount());
+		System.out.println("Bitcount = " + and_228.bitCount());
 
 		cyphered = msg;
-		System.out.println("Bitcount = "+key.bitCount());
-		System.out.println("Bitcount = "+msg.bitCount());
-		
-		while(msg_lenth > 0){
+		System.out.println("Bitcount = " + key.bitCount());
+		System.out.println("Bitcount = " + msg.bitCount());
+
+		while (msg_lenth > 0) {
 			cyphered = cyphered.xor(key);
-			//cyphered = cyphered.shiftLeft(key.bitCount());
+			// cyphered = cyphered.shiftLeft(key.bitCount());
 			key = key.shiftLeft(key.bitCount());
 			msg_lenth -= key.bitCount();
+			System.out.println("while");
 		}
-		
+
 		cyphered = cyphered.shiftRight(key.bitCount());
-		//cyphered = cyphered.and(and_228);
-		
-		//cyphered = cyphered.xor(key);
+		// cyphered = cyphered.and(and_228);
+
+		// cyphered = cyphered.xor(key);
 		return cyphered;
 	}
 
@@ -366,14 +366,14 @@ public class LFSR {
 		BigInteger result = new BigInteger("0");
 		File file = new File(file_name);
 		byte[] byte_array = new byte[(int) file.length()];
-		
+
 		try {
 			stream = new FileInputStream(file);
 			try {
-				stream.read(byte_array); /* Stock le fichier vers byte[]*/
-				//System.out.println(new BigInteger(byte_array).toString(2));
+				stream.read(byte_array); /* Stock le fichier vers byte[] */
+				// System.out.println(new BigInteger(byte_array).toString(2));
 
-				result = new BigInteger(byte_array); /* Transformation en BigInt*/
+				result = new BigInteger(byte_array); /* Transformation en BigInt */
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -389,10 +389,10 @@ public class LFSR {
 
 		return result;
 	}
-	
-	public void bigint_to_file(String file_name, BigInteger input_value){
+
+	public void bigint_to_file(String file_name, BigInteger input_value) {
 		FileOutputStream stream = null;
-		File file = new File(file_name);		
+		File file = new File(file_name);
 		try {
 			stream = new FileOutputStream(file);
 			try {
@@ -400,7 +400,7 @@ public class LFSR {
 				byte[] byte_array = new byte[input_value.byteValue()];
 				byte_array = input_value.toByteArray();
 				System.out.println(byte_array.length);
-				stream.write(byte_array); /* Stock le fichier en byte[]*/				
+				stream.write(byte_array); /* Stock le fichier en byte[] */
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -413,5 +413,60 @@ public class LFSR {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public byte[] file_to_byte(String file_name) {
+		FileInputStream stream = null;
+		File file = new File(file_name);
+		byte[] byte_array = new byte[(int) file.length()];
+
+		try {
+			stream = new FileInputStream(file);
+			try {
+				stream.read(byte_array); /* Stock le fichier vers byte[] */
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return byte_array;
+	}
+
+	public void byte_to_file(String file_name, byte[] byte_array) {
+		FileOutputStream stream = null;
+		File file = new File(file_name);
+
+		try {
+			stream = new FileOutputStream(file);
+			try {
+				stream.write(byte_array); /* Stock le fichier vers byte[] */
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public byte[] byte_xor(byte[] key, byte[] input_value) {
+		int i;
+		byte[] result = new byte[input_value.length];
+		for (i = 0; i < input_value.length; i++) {
+			result[i] = (byte) (key[i%key.length] ^ input_value[i]);
+		}
+		return result;
 	}
 }
