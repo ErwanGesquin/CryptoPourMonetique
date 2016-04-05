@@ -322,8 +322,8 @@ public class LFSR {
 			}
 
 		}
-		System.out.println(and_228.toString(2));
-		System.out.println(key.toString(2));
+		//System.out.println(and_228.toString(2));
+		//System.out.println(key.toString(2));
 
 		return key.shiftRight(1).and(and_228);
 	}
@@ -340,18 +340,14 @@ public class LFSR {
 		for (i = 0; i < msg_lenth; i++) {
 			and_228 = and_228.setBit(i);
 		}
-		System.out.println("Bitcount = " + and_228.bitCount());
 
 		cyphered = msg;
-		System.out.println("Bitcount = " + key.bitCount());
-		System.out.println("Bitcount = " + msg.bitCount());
-
+	
 		while (msg_lenth > 0) {
 			cyphered = cyphered.xor(key);
 			// cyphered = cyphered.shiftLeft(key.bitCount());
 			key = key.shiftLeft(key.bitCount());
 			msg_lenth -= key.bitCount();
-			System.out.println("while");
 		}
 
 		cyphered = cyphered.shiftRight(key.bitCount());
@@ -396,10 +392,8 @@ public class LFSR {
 		try {
 			stream = new FileOutputStream(file);
 			try {
-				System.out.println(input_value.toByteArray().length);
 				byte[] byte_array = new byte[input_value.byteValue()];
 				byte_array = input_value.toByteArray();
-				System.out.println(byte_array.length);
 				stream.write(byte_array); /* Stock le fichier en byte[] */
 			} catch (IOException e) {
 				e.printStackTrace();

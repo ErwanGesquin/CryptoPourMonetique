@@ -51,46 +51,36 @@ public class TpCrypto {
 		System.out.println("LFSR 1 = " + Long.toBinaryString(lfsr.LFSR1));
 		System.out.println("LFSR 2 = " + Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
-		System.out.println("Chiffré = " + result);
 
 		lfsr = lfsr.cycle_64(lfsr);
 
 		System.out.println("\nLFSR 1 = " + Long.toBinaryString(lfsr.LFSR1));
 		System.out.println("LFSR 2 = " + Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
-		System.out.println("Chiffré = " + result);
 
 		lfsr = lfsr.cycle_100(lfsr);
 
 		System.out.println("\nLFSR 1 = " + Long.toBinaryString(lfsr.LFSR1));
 		System.out.println("LFSR 2 = " + Long.toBinaryString(lfsr.LFSR2));
 		System.out.println("LFSR 3 = " + Long.toBinaryString(lfsr.LFSR3));
-		System.out.println("Chiffré = " + result);
 
 		BigInteger key = lfsr.cycle_228(lfsr);
-		System.out.println("\nClef    = " + key.toString(2));
 		BigInteger cyphered = lfsr.cypher_xor(key, new BigInteger("898454354"));
-		System.out.println("\nChiffré = " + cyphered.toString(2));
 
 		/* Lecture d'un message depuis un fichier */
 		BigInteger read = lfsr.file_to_bigint("src/msg.txt");
 		/* Chiffrement */ 
 		cyphered = lfsr.cypher_xor(key, read);
 
-		System.out.println("\nLecture du fichier = " + read.toString(2));
-		System.out.println("\nContenu du fichier (après chiffrement) = " + cyphered.toString(2));
-
-		/* Ecriture du chiffre dans un fichier */
-		lfsr.bigint_to_file("src/chiffre.txt", cyphered);
 		
-		read = lfsr.file_to_bigint("src/chiffre.txt");
+		/* Ecriture du chiffre dans un fichier */
+		/* !!! Partie qui bug attention !!!*/
+		//lfsr.bigint_to_file("src/chiffre.txt", cyphered);
+		//read = lfsr.file_to_bigint("src/chiffre.txt");
 		
 		
 		/* Déchiffrement du chiffré */
 		BigInteger unphered = lfsr.cypher_xor(key, read);
-
-		System.out.println("\nClair (int) = " + unphered.toString());
-		System.out.println("\nClair   = " + new String(unphered.toByteArray()));
 		
 		/* Version avec byte[] */
 		byte[] key_byte = key.toByteArray();
@@ -98,15 +88,21 @@ public class TpCrypto {
 		
 		byte[] cyphered_byte = lfsr.byte_xor(key_byte, read_byte);
 
-		System.out.println("\nLecture  = " + new BigInteger(read_byte).toString());
-		System.out.println("\nChiffré (int) = " + new BigInteger(cyphered_byte).toString());
+		System.out.println("\nLecture du fichier (Binaire)  = " + new BigInteger(read_byte).toString(2));
+		System.out.println("Lecture du fichier (Décimal)  = " + new BigInteger(read_byte).toString());
+		System.out.println("Lecture du fichier (Alphabet) = " + new String(new BigInteger(read_byte).toByteArray()));
 		
+		System.out.println("\nChiffré (Binaire)   = " + new BigInteger(cyphered_byte).toString(2));
+		System.out.println("Chiffré (Décimal)   = " + new BigInteger(cyphered_byte).toString());
+		System.out.println("Chiffré (Alphabet)  = " + new String(new BigInteger(cyphered_byte).toByteArray()));
+
 		lfsr.byte_to_file("src/chiffre.txt", cyphered_byte);
 		
 		cyphered_byte = lfsr.file_to_byte("src/chiffre.txt");
 		byte[] result_byte = lfsr.byte_xor(key_byte, cyphered_byte);
-		System.out.println("\nResultat = " + new BigInteger(result_byte).toString());
-		System.out.println("\nClair   = " + new String(new BigInteger(result_byte).toByteArray()));
+		System.out.println("\nDéchiffré (Binaire)  = " + new BigInteger(result_byte).toString(2));
+		System.out.println("Déchiffré (Décimal)  = " + new BigInteger(result_byte).toString());
+		System.out.println("Déchiffré (Alphabet) = " + new String(new BigInteger(result_byte).toByteArray()));
 
 		
 	}
