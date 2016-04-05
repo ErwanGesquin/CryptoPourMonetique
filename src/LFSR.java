@@ -272,9 +272,8 @@ public class LFSR {
 
 	/**
 	 * Renvoie la clef (228 bits)
-	 * 
 	 * @param lfsr
-	 * @return
+	 * @return 
 	 */
 	public BigInteger cycle_228(LFSR lfsr) {
 		long xor1, xor2, xor3;
@@ -322,12 +321,18 @@ public class LFSR {
 			}
 
 		}
-		System.out.println(and_228.toString(2));
-		System.out.println(key.toString(2));
+		//System.out.println(and_228.toString(2));
+		//System.out.println(key.toString(2));
 
 		return key.shiftRight(1).and(and_228);
 	}
 
+	/**
+	 * Chiffrement/déchiffrement avec XOR au format BigInteger
+	 * @param key
+	 * @param msg
+	 * @return
+	 */
 	public BigInteger cypher_xor(BigInteger key, BigInteger msg) {
 		BigInteger cyphered;
 		int i;
@@ -340,18 +345,14 @@ public class LFSR {
 		for (i = 0; i < msg_lenth; i++) {
 			and_228 = and_228.setBit(i);
 		}
-		System.out.println("Bitcount = " + and_228.bitCount());
 
 		cyphered = msg;
-		System.out.println("Bitcount = " + key.bitCount());
-		System.out.println("Bitcount = " + msg.bitCount());
-
+	
 		while (msg_lenth > 0) {
 			cyphered = cyphered.xor(key);
 			// cyphered = cyphered.shiftLeft(key.bitCount());
 			key = key.shiftLeft(key.bitCount());
 			msg_lenth -= key.bitCount();
-			System.out.println("while");
 		}
 
 		cyphered = cyphered.shiftRight(key.bitCount());
@@ -361,6 +362,11 @@ public class LFSR {
 		return cyphered;
 	}
 
+	/**
+	 * Lecture d'un fichier vers un BigInteger
+	 * @param file_name
+	 * @return le résultat de la lecture du fichier
+	 */
 	public BigInteger file_to_bigint(String file_name) {
 		FileInputStream stream = null;
 		BigInteger result = new BigInteger("0");
@@ -390,16 +396,19 @@ public class LFSR {
 		return result;
 	}
 
+	/**
+	 * Enregistre un nombre dans un fichier
+	 * @param file_name
+	 * @param input_value
+	 */
 	public void bigint_to_file(String file_name, BigInteger input_value) {
 		FileOutputStream stream = null;
 		File file = new File(file_name);
 		try {
 			stream = new FileOutputStream(file);
 			try {
-				System.out.println(input_value.toByteArray().length);
 				byte[] byte_array = new byte[input_value.byteValue()];
 				byte_array = input_value.toByteArray();
-				System.out.println(byte_array.length);
 				stream.write(byte_array); /* Stock le fichier en byte[] */
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -415,6 +424,11 @@ public class LFSR {
 		}
 	}
 
+	/**
+	 * Lecture d'un fichier vers un tableau de byte
+	 * @param file_name
+	 * @return
+	 */
 	public byte[] file_to_byte(String file_name) {
 		FileInputStream stream = null;
 		File file = new File(file_name);
@@ -439,6 +453,11 @@ public class LFSR {
 		return byte_array;
 	}
 
+	/**
+	 * Enregistrement d'un tableau de "byte" dans un fichier
+	 * @param file_name
+	 * @param byte_array
+	 */
 	public void byte_to_file(String file_name, byte[] byte_array) {
 		FileOutputStream stream = null;
 		File file = new File(file_name);
@@ -461,6 +480,12 @@ public class LFSR {
 		}
 	}
 	
+	/**
+	 * Chiffrement/déchiffrement avec XOR au format byte[]
+	 * @param key
+	 * @param input_value
+	 * @return
+	 */
 	public byte[] byte_xor(byte[] key, byte[] input_value) {
 		int i;
 		byte[] result = new byte[input_value.length];
